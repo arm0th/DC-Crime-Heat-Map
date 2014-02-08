@@ -35,11 +35,13 @@ with open(csvFilename, 'r') as csvFile:
             wasSkipped = 1
             continue
 
-        curEastCoord = row[7]
-        curNorthCoord = row[8]
+        curEastCoord = round(float(row[7]), 2)
+        curNorthCoord = round(float(row[8]), 2)
         #print curNorthCoord, curEastCoord
         curCoords = pyproj.transform(nad83, wgs84, curEastCoord, curNorthCoord)
 
-        coordsList.append({ "latitude" : curCoords[1], "longitude": curCoords[0]})
+        #for now we are just dumping everything into arrays
+        #coordsList.append({ "latitude" : curCoords[1], "longitude": curCoords[0]})
+        coordsList.append([ curCoords[1], curCoords[0]])
 
 print json.dumps(coordsList)
