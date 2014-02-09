@@ -1,10 +1,10 @@
-/*global document*/
+/*global document, $, L, createjs */
 var App = {
     map: null,
     curHeatLayer: null,
     initialize: function () {
         var self = this;
-             
+
         //download all heatmap data
         this.downloadQueue = this.downloadData();
 
@@ -19,7 +19,7 @@ var App = {
             //NOTE: this refers to the dropdown
             $("#yearDropBtn").text("Crime for " + newYear);
             $(this).removeClass("open"); //hides the dropdown
-            this.style.left = "-999999px"; //TODO: find a better way!
+            this.style.left = "-999999px"; // TODO: find a better way!
         });
     },
     initMap: function () {
@@ -33,9 +33,14 @@ var App = {
         if (this.curHeatLayer) {
             this.map.removeLayer(this.curHeatLayer);
         }
-        return L.heatLayer(crimeData, {maxZoom: 20}).addTo(m);
+        return L.heatLayer(crimeData, {
+            maxZoom: 21,
+                max: 0.8,
+             radius:40
+        }).addTo(m);
     },
     dataURLs: [
+        { id: "crimeData2010", src: "js/crimeDataCoords_2010.json" },
         { id: "crimeData2011", src: "js/crimeDataCoords_2011.json" },
         { id: "crimeData2012", src: "js/crimeDataCoords_2012.json" },
         { id: "crimeData2013", src: "js/crimeDataCoords_2013.json" }
@@ -49,12 +54,12 @@ var App = {
         var queue = new createjs.LoadQueue();
 
         queue.on("complete", this.downloadCompleteHandler, this);
-        queue.on("error", function (e) {
+        queue.on("error", function () {
             alert("Failed to load crime data");
         });
-        queue.on("fileload", function (e) {
-            //TODO: do we need to do something after something loads?
-        });
+//        queue.on("fileload", function () {
+//            //do we need to do something after something loads?
+//        });
         queue.loadManifest(this.dataURLs);
 
         return queue;
