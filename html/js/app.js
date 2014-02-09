@@ -53,11 +53,20 @@ var App = {
     downloadCompleteHandler: function () {
         var data = this.downloadQueue.getResult("crimeData2013");
         this.curHeatLayer = this.loadHeatMapLayer(this.map, data);
+        $("#progressContainer").css("display", "none");
     },
     downloadData: function () {
-        var queue = new createjs.LoadQueue();
+        var queue = new createjs.LoadQueue(),
+            progBar = $("#progressBar"),
+            progBarMeter = progBar.find("span");
 
         queue.on("complete", this.downloadCompleteHandler, this);
+        queue.on("progress", function (e) {
+            console.log(e.progress);
+            //TODO: refactor this, we shouldn't hardcode things
+            var newWidth = 200  * e.progress;
+            progBarMeter.css("width", newWidth + "px");
+        });
         queue.on("error", function () {
             alert("Failed to load crime data");
         });
