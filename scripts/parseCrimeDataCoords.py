@@ -9,7 +9,7 @@ try:
     import pyproj
 
 except ImportError:
-    print "Please install the pyproj python module!"
+    sys.stderr.write("Please install the pyproj python module!\n")
     sys.exit(3)
 
 isNAD83 = True
