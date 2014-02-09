@@ -55,6 +55,6 @@ with open(csvFilename, 'r') as csvFile:
 
         #for now we are just dumping everything into arrays
         #coordsList.append({ "latitude" : curCoords[1], "longitude": curCoords[0]})
-        coordsList.append([ round(curCoords[1], 2), round(curCoords[0], 2)])
+        coordsList.append([ round(curCoords[1], 6), round(curCoords[0], 6)])
 
 print json.dumps(coordsList)
