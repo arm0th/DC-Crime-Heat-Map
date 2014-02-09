@@ -40,6 +40,10 @@ var App = {
         }).addTo(m);
     },
     dataURLs: [
+        { id: "crimeData2006", src: "js/crimeDataCoords_2006.json" },
+        { id: "crimeData2007", src: "js/crimeDataCoords_2007.json" },
+        { id: "crimeData2008", src: "js/crimeDataCoords_2008.json" },
+        { id: "crimeData2009", src: "js/crimeDataCoords_2009.json" },
         { id: "crimeData2010", src: "js/crimeDataCoords_2010.json" },
         { id: "crimeData2011", src: "js/crimeDataCoords_2011.json" },
         { id: "crimeData2012", src: "js/crimeDataCoords_2012.json" },

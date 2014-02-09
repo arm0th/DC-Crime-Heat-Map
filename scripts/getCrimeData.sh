@@ -8,6 +8,10 @@ JS_PATH=../html/js
 JS_PREFIX=crimeDataCoords
 
 #URLS
+crimeDataURL2006=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2006_CSV.zip
+crimeDataURL2007=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2007_CSV.zip
+crimeDataURL2008=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2008_CSV.zip
+crimeDataURL2009=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2009_CSV.zip
 crimeDataURL2010=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2010_CSV.zip
 crimeDataURL2011=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2011_CSV.zip
 crimeDataURL2012=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2012_CSV.zip
@@ -56,6 +60,10 @@ if [ ! -e $DATA_PATH ]; then
 fi
 
 #reteive and extract data
+downloadData $crimeDataURL2006 2006
+downloadData $crimeDataURL2007 2007
+downloadData $crimeDataURL2008 2008
+downloadData $crimeDataURL2009 2009
 downloadData $crimeDataURL2010 2010
 downloadData $crimeDataURL2011 2011
 downloadData $crimeDataURL2012 2012
