@@ -17,7 +17,7 @@ var App = {
             self.curHeatLayer = self.loadHeatMapLayer(self.map, data);
             //alert("we got something: " + newYear);
             //NOTE: this refers to the dropdown
-            $("#yearDropBtn").text("Crime for " + newYear);
+            $("#yearDropBtn").text(newYear);
             $(this).removeClass("open"); //hides the dropdown
             this.style.left = "-999999px"; // TODO: find a better way!
         });

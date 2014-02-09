@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DC Crime Heat Map</title>
     <!-- <link rel="stylesheet" href="bower_components/mapbox.js.compiled/mapbox.css"> -->
     <link href='http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
@@ -17,20 +18,14 @@
 </head>
 <body>
     <div id="outerHeader" class="row">
-        <div class="columns large-12">
+        <div class="columns small-12 small-centered medium-uncentered medium-9">
             <div id="header">
-                <img src="images/DCFlag.png" alt="DC Flag Logo">DC Crime Map
+                <span> <img class="show-for-medium-up" src="images/DCFlag.png" alt="DC Flag Logo">DC Crime Heat Map</span>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="large-12 columns ">
-        </div>
-    </div>
-
-    <div id="mapContainer">
-        <div id="yearContainer">
-            <a id="yearDropBtn" href="#" data-dropdown="yearDropItems" class="button dropdown">Crime for 2013</a><br>
+        <div class="columns small-4 small-offset-4 small-pull-5 medium-3 medium-reset-order ">
+           <div id="yearContainer">
+            <a id="yearDropBtn" href="#" data-dropdown="yearDropItems" class="button dropdown">2013</a><br>
             <ul id="yearDropItems" data-dropdown-content class="f-dropdown">
               <li><a href="#">2013</a></li>
               <li><a href="#">2012</a></li>
@@ -41,7 +36,11 @@
               <li><a href="#">2007</a></li>
               <li><a href="#">2006</a></li>
             </ul>
+           </div>
         </div>
+    </div>
+
+    <div id="mapContainer">
         <div id='map'></div>
     </div>
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
