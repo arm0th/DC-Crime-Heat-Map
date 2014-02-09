@@ -43,7 +43,6 @@ with open(csvFilename, 'r') as csvFile:
                 #set the lat and lon columns
                 latCol = row.index("LATITUDE")
                 lonCol = row.index("LONGITUDE")
-                print("GOT COL NUM: %d" % latCol)
 
             wasSkipped = 1
             continue
@@ -64,7 +63,7 @@ with open(csvFilename, 'r') as csvFile:
             #data is already in Lat/Lon so we are golden
             #just make sure to pull from the correct columns
             try:
-                curCoords = [ float(row[latCol]), float(row[lonCol]) ]
+                curCoords = [ float(row[lonCol]), float(row[latCol]) ]
             except ValueError:
                 sys.stderr.write("\nCould not parse line number %d for %s. Continuing ...\n" % (curLine, csvFilename))
                 continue
