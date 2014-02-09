@@ -16,7 +16,15 @@ The download and generate the data, the following is needed:
 
 ## Installation
 
-First be sure that you have pyproj installed. If you don't, [download](https://code.google.com/p/pyproj/downloads/list) it and execute the following:
+First be sure that you have pyproj installed. 
+
+On apt-get based Linux systems you should be able to install with something like the following:
+
+```bash
+sudo apt-get install python-pyproj
+```
+
+If you're on a Mac or your Linux distribution did not package the module, [download](https://code.google.com/p/pyproj/downloads/list) it and execute the following:
 
 ```bash
 $ tar zxvf pyproj-1.9.3.tar.gz
