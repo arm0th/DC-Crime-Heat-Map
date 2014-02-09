@@ -47,4 +47,7 @@ var App = {
 //on document ready
 $(function() {
     App.initialize();
+
+    //initialize foundation
+    $(document).foundation();
 });
