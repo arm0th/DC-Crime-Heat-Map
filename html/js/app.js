@@ -3,10 +3,24 @@ var App = {
     map: null,
     curHeatLayer: null,
     initialize: function () {
+        var self = this;
              
         //download all heatmap data
-        this.downloadData();
+        this.downloadQueue = this.downloadData();
+
         this.map = this.initMap();
+
+        $("#yearDropItems").click(function (e) {
+            var newYear = e.target.innerText;
+
+            var data = self.downloadQueue.getResult("crimeData" + newYear);
+            self.curHeatLayer = self.loadHeatMapLayer(self.map, data);
+            //alert("we got something: " + newYear);
+            //NOTE: this refers to the dropdown
+            $("#yearDropBtn").text("Crime for " + newYear);
+            $(this).removeClass("open"); //hides the dropdown
+            this.style.left = "-999999px"; //TODO: find a better way!
+        });
     },
     initMap: function () {
         //set up map
@@ -16,6 +30,9 @@ var App = {
         return map;
     },
     loadHeatMapLayer: function (m, crimeData) {
+        if (this.curHeatLayer) {
+            this.map.removeLayer(this.curHeatLayer);
+        }
         return L.heatLayer(crimeData, {maxZoom: 20}).addTo(m);
     },
     dataURLs: [
@@ -29,8 +46,7 @@ var App = {
         this.curHeatLayer = this.loadHeatMapLayer(this.map, data);
     },
     downloadData: function () {
-        this.downloadQueue = new createjs.LoadQueue();
-        var queue = this.downloadQueue;
+        var queue = new createjs.LoadQueue();
 
         queue.on("complete", this.downloadCompleteHandler, this);
         queue.on("error", function (e) {
@@ -40,14 +56,16 @@ var App = {
             //TODO: do we need to do something after something loads?
         });
         queue.loadManifest(this.dataURLs);
+
+        return queue;
     }
 
 };
 
 //on document ready
 $(function() {
-    App.initialize();
-
     //initialize foundation
     $(document).foundation();
+
+    App.initialize();
 });
