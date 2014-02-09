@@ -1,0 +1,26 @@
+{
+  "name": "DC-Crime-Heat-Map",
+  "version": "0.0.5",
+  "homepage": "https://github.com/LonnyGomes/DC-Crime-Heat-Map",
+  "authors": [
+    "Lonny Gomes <code@lonnygomes.com>"
+  ],
+  "description": "A Web app that displays a heatmap of crime in DC",
+  "main": "app.js",
+  "keywords": [
+    "DC",
+    "map",
+    "heatmap",
+    "crime",
+    "Washington"
+  ],
+  "license": "GPLv2",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "html/bower_components",
+    "test",
+    "tests"
+  ]
+}
