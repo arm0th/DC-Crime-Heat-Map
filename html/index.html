@@ -7,6 +7,8 @@
     <!-- <link rel="stylesheet" href="bower_components/mapbox.js.compiled/mapbox.css"> -->
     <link href='http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.css' rel='stylesheet' />
     <link href='bower_components/foundation/css/foundation.min.css' rel='stylesheet' />
+    <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css">
     <link rel="stylesheet" href="css/main.css">
 
     <script src="bower_components/modernizr/modernizr.js"></script>
@@ -14,6 +16,7 @@
     <script src="http://code.createjs.com/preloadjs-0.4.1.min.js"></script>
     <script src='http://api.tiles.mapbox.com/mapbox.js/v1.6.1/mapbox.js'></script>
     <script src='http://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.0/leaflet-heat.js'></script>
+    <script src='bower_components/leaflet.markercluster/dist/leaflet.markercluster.js'></script>
     <link href='http://fonts.googleapis.com/css?family=Alegreya+Sans+SC' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -41,6 +44,10 @@
     </div>
 
     <div id="mapContainer">
+        <ul id="layerButtons" class="button-group radius">
+            <li><a href="#" class="button small activeButton">Heatmap</a></li>
+            <li><a href="#" class="button small">Points</a></li>
+        </ul>
         <div id='map'></div>
     </div>
 

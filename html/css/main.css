@@ -49,6 +49,18 @@ body { margin: 0; padding: 0 }
     width:100%;
 }
 
+#layerButtons {
+    position: relative;
+    float: right;
+    padding-right: 10px;
+    top: 5px;
+    z-index: 2;
+}
+
+.activeButton {
+    background-color: #9b1b34
+}
+
 #progressBar {
     height: 30px;
     width: 200px;

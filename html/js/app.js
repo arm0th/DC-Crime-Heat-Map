@@ -2,6 +2,7 @@
 var App = {
     map: null,
     curHeatLayer: null,
+    pointLayers: {}, // object to store point layer groups
     initialize: function () {
         "use strict";
         
@@ -21,6 +22,14 @@ var App = {
             $("#yearDropBtn").text(newYear);
             $(this).removeClass("open"); //hides the dropdown
             this.style.left = "-999999px"; // TODO: find a better way!
+        });
+        
+        $("#layerButtons a").click(function (e) {
+            var btnEl = $(this),
+                btnName = btnEl.text();
+
+            $("#layerButtons a").removeClass("activeButton");
+            btnEl.addClass("activeButton");
         });
     },
     initMap: function () {
@@ -59,8 +68,12 @@ var App = {
         "use strict";
 
         var data = this.downloadQueue.getResult("crimeData2013");
-        this.curHeatLayer = this.loadHeatMapLayer(this.map, data);
+        //this.curHeatLayer = this.loadHeatMapLayer(this.map, data);
         $("#progressContainer").css("display", "none");
+        
+        var layer = this.genMarkerLayer(data);
+        
+        this.map.addLayer(layer);
     },
     downloadData: function () {
         "use strict";
@@ -84,6 +97,23 @@ var App = {
         queue.loadManifest(this.dataURLs);
 
         return queue;
+    },
+    genMarkerLayer: function (data) {
+        "use strict";
+        
+        var markers = L.markerClusterGroup(),
+            curMarker,
+            idx,
+            curCoords;
+        
+        for (idx = 0; idx < data.length; idx++) {
+            curCoords = data[idx];
+            //console.log(curCoords[1]);
+            curMarker = L.marker([curCoords[0], curCoords[1]]);
+            markers.addLayer(curMarker);
+        }
+        
+        return markers;
     }
 
 };
