@@ -48,4 +48,4 @@ $ cd scripts
 $ ./getCrimeData.sh
 ```
 
-The download script retrieves the data, uncompresses and then uses a python script to parse the data, convert the coordinates and output json files into the html/js folder.
+The download script retrieves the data, uncompresses and then uses a python script to parse the data, convert the coordinates and output json files into the html/js/data folder.

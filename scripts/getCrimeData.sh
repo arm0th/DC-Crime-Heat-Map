@@ -4,7 +4,7 @@ UNZIP=`which unzip`
 DATA_PATH=../data
 PYTHON=`which python`
 PYTHON_PARSER=parseCrimeDataCoords.py
-JS_PATH=../html/js
+JS_PATH=../html/js/data
 JS_PREFIX=crimeDataCoords
 
 #URLS
