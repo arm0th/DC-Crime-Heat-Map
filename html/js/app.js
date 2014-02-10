@@ -3,6 +3,8 @@ var App = {
     map: null,
     curHeatLayer: null,
     initialize: function () {
+        "use strict";
+        
         var self = this;
 
         //download all heatmap data
@@ -11,9 +13,8 @@ var App = {
         this.map = this.initMap();
 
         $("#yearDropItems").click(function (e) {
-            var newYear = e.target.innerText;
-
-            var data = self.downloadQueue.getResult("crimeData" + newYear);
+            var newYear = e.target.innerText,
+                data = self.downloadQueue.getResult("crimeData" + newYear);
             self.curHeatLayer = self.loadHeatMapLayer(self.map, data);
             //alert("we got something: " + newYear);
             //NOTE: this refers to the dropdown
@@ -23,6 +24,8 @@ var App = {
         });
     },
     initMap: function () {
+        "use strict";
+
         //set up map
         var map = L.mapbox.map('map', 'uknowho.map-wc8j7l0g')
             .setView([38.9, -77.02], 12);
@@ -30,13 +33,15 @@ var App = {
         return map;
     },
     loadHeatMapLayer: function (m, crimeData) {
+        "use strict";
+
         if (this.curHeatLayer) {
             this.map.removeLayer(this.curHeatLayer);
         }
         return L.heatLayer(crimeData, {
             maxZoom: 21,
-                max: 0.8,
-             radius:40
+            max: 0.8,
+            radius: 40
         }).addTo(m);
     },
     dataURLs: [
@@ -51,18 +56,21 @@ var App = {
     ],
     downloadQueue: {},
     downloadCompleteHandler: function () {
+        "use strict";
+
         var data = this.downloadQueue.getResult("crimeData2013");
         this.curHeatLayer = this.loadHeatMapLayer(this.map, data);
         $("#progressContainer").css("display", "none");
     },
     downloadData: function () {
+        "use strict";
+
         var queue = new createjs.LoadQueue(),
             progBar = $("#progressBar"),
             progBarMeter = progBar.find("span");
 
         queue.on("complete", this.downloadCompleteHandler, this);
         queue.on("progress", function (e) {
-            console.log(e.progress);
             //TODO: refactor this, we shouldn't hardcode things
             var newWidth = 200  * e.progress;
             progBarMeter.css("width", newWidth + "px");
@@ -81,7 +89,9 @@ var App = {
 };
 
 //on document ready
-$(function() {
+$(function () {
+    "use strict";
+
     //initialize foundation
     $(document).foundation();
 
