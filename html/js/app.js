@@ -40,8 +40,8 @@ var App = {
         }
         return L.heatLayer(crimeData, {
             maxZoom: 21,
-            max: 0.8,
-            radius: 40
+            max: 0.7,
+            radius: 30
         }).addTo(m);
     },
     dataURLs: [
