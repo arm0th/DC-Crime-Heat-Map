@@ -3,6 +3,7 @@ var App = {
     map: null,
     curHeatLayer: null,
     pointLayers: {}, // object to store point layer groups
+    worker: null,
     initialize: function () {
         "use strict";
         
@@ -71,9 +72,9 @@ var App = {
         //this.curHeatLayer = this.loadHeatMapLayer(this.map, data);
         $("#progressContainer").css("display", "none");
         
-        var layer = this.genMarkerLayer(data);
+        this.genMarkerLayer(data);
         
-        this.map.addLayer(layer);
+        //this.map.addLayer(layer);
     },
     downloadData: function () {
         "use strict";
@@ -101,19 +102,34 @@ var App = {
     genMarkerLayer: function (data) {
         "use strict";
         
-        var markers = L.markerClusterGroup(),
-            curMarker,
-            idx,
-            curCoords;
-        
-        for (idx = 0; idx < data.length; idx++) {
-            curCoords = data[idx];
-            //console.log(curCoords[1]);
-            curMarker = L.marker([curCoords[0], curCoords[1]]);
-            markers.addLayer(curMarker);
+        var clusterGroup = L.markerClusterGroup();
+        this.map.addLayer(clusterGroup);
+
+        if (typeof(Worker) !== "undefined") {
+            if (this.worker === null) {
+                this.worker = new Worker("js/workers/genClusterLayer.js");
+            }
+
+            this.worker.onmessage = function (e) {
+                var obj = e.data;
+                if (obj.status === "loading") {
+                    var idx, curCoord, curMarkers = [];
+
+                    for (idx = 0; idx < obj.data.length; idx++) {
+                        curCoord = obj.data[idx];
+                        curMarkers.push(L.marker([curCoord[0], curCoord[1]]));
+                    }
+                    clusterGroup.addLayers(curMarkers);
+                } else if (obj.status === "complete") {
+                    alert("Loaded data!" + this);
+                }
+            }
+
+            //pass in the Leaflet object to the worker
+            this.worker.postMessage(data);
+        } else {
+            alert("Web workers aren't supported on your browser. No plotting for you!")
         }
-        
-        return markers;
     }
 
 };
