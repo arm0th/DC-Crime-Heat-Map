@@ -39,12 +39,14 @@ var App = {
         "use strict";
 
         //set up map
-        var map = L.mapbox.map('map', 'uknowho.map-wc8j7l0g')
-            .setView([38.9, -77.02], 12);
+        var map = L.mapbox.map('map', 'uknowho.map-wc8j7l0g', {
+                minZoom: 11,
+                maxZoom: 20
+            }).setView([38.9, -77.02], 12);
 
         //add heat layer with empty set for now
         this.curHeatLayer = L.heatLayer([], {
-            maxZoom: 21,
+            maxZoom: 20,
             max: 0.7,
             radius: 30
         });
