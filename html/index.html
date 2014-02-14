@@ -42,7 +42,7 @@
     </div>
 
     <div id="mapContainer">
-        <ul id="layerButtons" class="button-group radius">
+        <ul id="layerButtons" class="button-group radius" style="display: none;">
             <li><a href="#" class="button small activeButton">Heatmap</a></li>
             <li><a href="#" class="button small">Points</a></li>
         </ul>
@@ -54,6 +54,11 @@
         <div id="progressBar" class="progress">
             <span class="meter"></span>
         </div>
+    </div>
+
+    <div id="messageModal" class="reveal-modal tiny" data-reveal>
+        <p class="lead">Your couch.  It is mine.</p>
+        <a class="close-reveal-modal">&#215;</a>
     </div>
 
     <script src="bower_components/jquery/jquery.min.js"></script>

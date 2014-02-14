@@ -2,7 +2,7 @@
 var App = {
     map: null,
     curHeatLayer: null,
-    pointLayers: {}, // object to store point layer groups
+    clusterLayer: {}, // object to store point layer groups
     worker: null,
     initialize: function () {
         "use strict";
@@ -17,11 +17,13 @@ var App = {
         $("#yearDropItems").click(function (e) {
             var newYear = e.target.innerText,
                 data = self.downloadQueue.getResult("crimeData" + newYear);
-            self.curHeatLayer = self.loadHeatMapLayer(self.map, data);
-            //alert("we got something: " + newYear);
+            self.loadHeatMapLayer(self.map, data);
+
+            self.loadClusterData(data, self.clusterLayer);
+
             //NOTE: this refers to the dropdown
             $("#yearDropBtn").text(newYear);
-            $(this).removeClass("open"); //hides the dropdown
+            $(this).removeClass("open"); //should hide the dropdown but does not
             this.style.left = "-999999px"; // TODO: find a better way!
         });
         
@@ -39,20 +41,27 @@ var App = {
         //set up map
         var map = L.mapbox.map('map', 'uknowho.map-wc8j7l0g')
             .setView([38.9, -77.02], 12);
-            //heat = {}; // L.heatLayer(crimeData, {maxZoom: 18}).addTo(map);
+
+        //add heat layer with empty set for now
+        this.curHeatLayer = L.heatLayer([], {
+            maxZoom: 21,
+            max: 0.7,
+            radius: 30
+        });
+        this.curHeatLayer.addTo(map);
+
+        //create cluster layer where all the points are held
+        this.clusterLayer = L.markerClusterGroup();
+        this.clusterLayer.addTo(map);
+
         return map;
     },
     loadHeatMapLayer: function (m, crimeData) {
         "use strict";
 
         if (this.curHeatLayer) {
-            this.map.removeLayer(this.curHeatLayer);
+            this.curHeatLayer.setLatLngs(crimeData);
         }
-        return L.heatLayer(crimeData, {
-            maxZoom: 21,
-            max: 0.7,
-            radius: 30
-        }).addTo(m);
     },
     dataURLs: [
         { id: "crimeData2006", src: "js/data/crimeDataCoords_2006.json" },
@@ -69,12 +78,10 @@ var App = {
         "use strict";
 
         var data = this.downloadQueue.getResult("crimeData2013");
-        //this.curHeatLayer = this.loadHeatMapLayer(this.map, data);
+        this.loadHeatMapLayer(this.map, data);
         $("#progressContainer").css("display", "none");
         
-        this.genMarkerLayer(data);
-        
-        //this.map.addLayer(layer);
+        this.loadClusterData(data, this.clusterLayer);
     },
     downloadData: function () {
         "use strict";
@@ -99,16 +106,23 @@ var App = {
 
         return queue;
     },
-    genMarkerLayer: function (data) {
+    loadClusterData: function (data, clusterGroup) {
         "use strict";
-        
-        var clusterGroup = L.markerClusterGroup();
-        this.map.addLayer(clusterGroup);
 
+        var parent = this;
+
+        //remove all points before proceeding
+        clusterGroup.clearLayers();
+        
+        //TODO: handle this better for unsupported browsers
+        //check if browser supports web workers
         if (typeof(Worker) !== "undefined") {
-            if (this.worker === null) {
-                this.worker = new Worker("js/workers/genClusterLayer.js");
+            //if a worker is running, stop it
+            if (this.worker !== null) {
+                this.worker.terminate();
             }
+
+            this.worker = new Worker("js/workers/genClusterLayer.js");
 
             this.worker.onmessage = function (e) {
                 var obj = e.data;
@@ -121,15 +135,30 @@ var App = {
                     }
                     clusterGroup.addLayers(curMarkers);
                 } else if (obj.status === "complete") {
-                    alert("Loaded data!" + this);
+                    //show message
+                    parent.showMessage("Loaded Crime data points");
                 }
             }
 
             //pass in the Leaflet object to the worker
             this.worker.postMessage(data);
         } else {
-            alert("Web workers aren't supported on your browser. No plotting for you!")
+            alert("Web workers aren't supported on your browser. No plotting for you!");
         }
+    },
+    showMessage: function (msg) {
+        "use strict";
+
+        //populate data with text
+        $("#messageModal p").text(msg);
+
+        //show modal
+        $('#messageModal').foundation('reveal', 'open');
+
+        //hide it after a few seconds
+        setTimeout(function () {
+            $('#messageModal').foundation('reveal', 'close');
+        }, 1500);
     }
 
 };
