@@ -12,7 +12,8 @@
 body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
 
 #outerHeader {
-    border-bottom: 2px solid lightgrey;
+    border-bottom: 2.4px solid lightgrey;
+    background-color: #fff;
 }
 
 .columns {
@@ -21,7 +22,7 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
 
 #header {
     /* height: 100%; */
-    font-size: 2em;
+    font-size: 2.1em;
     font-family: 'open_sansregular', sans-serif;
     color: #4d4d4d;
     text-align: left;
@@ -91,6 +92,10 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
     z-index: 4;
 }
 
+.leaflet-control-zoom {
+    top: 60px;
+}
+
 /* small screen media query customizations */
 @media only screen and (max-width: 40em) { 
     /* on smaller screens we want the year button to center */
@@ -101,12 +106,18 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
     
     #header {
         text-align: center;
+        font-size: 1.7em;
     }
     
     /* make year dropdown span larger */
     #yearDropBtn {
         width: 100%;
         padding: 10px 5px;
+    }
+
+
+    .leaflet-control-zoom {
+       top: 80px;
     }
 
 }
