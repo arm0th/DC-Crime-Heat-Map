@@ -1,4 +1,5 @@
-/*global document, $, L, createjs */
+/*global document, $, L, createjs, Worker, setTimeout */
+/*jslint plusplus: true */
 var App = {
     map: null,
     curHeatLayer: null,
@@ -118,7 +119,7 @@ var App = {
         
         //TODO: handle this better for unsupported browsers
         //check if browser supports web workers
-        if (typeof(Worker) !== "undefined") {
+        if (typeof (Worker) !== "undefined") {
             //if a worker is running, stop it
             if (this.worker !== null) {
                 this.worker.terminate();
@@ -127,9 +128,12 @@ var App = {
             this.worker = new Worker("js/workers/genClusterLayer.js");
 
             this.worker.onmessage = function (e) {
-                var obj = e.data;
+                var obj = e.data,
+                    idx,
+                    curCoord,
+                    curMarkers = [];
                 if (obj.status === "loading") {
-                    var idx, curCoord, curMarkers = [];
+                    
 
                     for (idx = 0; idx < obj.data.length; idx++) {
                         curCoord = obj.data[idx];
@@ -140,7 +144,7 @@ var App = {
                     //show message
                     parent.showMessage("Loaded Crime data points");
                 }
-            }
+            };
 
             //pass in the Leaflet object to the worker
             this.worker.postMessage(data);

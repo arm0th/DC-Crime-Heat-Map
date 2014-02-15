@@ -1,3 +1,4 @@
+/*global onmessage, self, setTimeout, clearTimeout, postMessage */
 var curStartIdx = 0,
     chunkOffset = 512,
     data = [],
@@ -5,16 +6,9 @@ var curStartIdx = 0,
     timeoutVal = 100, //milliseconds
     timeoutObj;
 
-onmessage = function (e) {
-    //save reference to data
-    self.data = e.data;
-    self.dataLen = self.data.length;
-
-    //start the timeout "loop"
-    self.timeoutObj = setTimeout(processChunk, self.timeoutVal);
-}
-
 function processChunk() {
+    "use strict";
+
     var dataSlice, nextStartIdx;
 
     if (self.curStartIdx >= (self.dataLen - 1)) {
@@ -57,3 +51,14 @@ function processChunk() {
         self.timeoutObj = setTimeout(processChunk, self.timeoutVal);
     }
 }
+
+onmessage = function (e) {
+    "use strict";
+
+    //save reference to data
+    self.data = e.data;
+    self.dataLen = self.data.length;
+
+    //start the timeout "loop"
+    self.timeoutObj = setTimeout(processChunk, self.timeoutVal);
+};
