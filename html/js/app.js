@@ -131,13 +131,16 @@ var App = {
                 var obj = e.data,
                     idx,
                     curCoord,
+                    marker,
                     curMarkers = [];
                 if (obj.status === "loading") {
                     
 
                     for (idx = 0; idx < obj.data.length; idx++) {
                         curCoord = obj.data[idx];
-                        curMarkers.push(L.marker([curCoord[0], curCoord[1]]));
+                        marker = L.marker([curCoord[0], curCoord[1]]);
+                        marker.bindPopup(curCoord[2]);
+                        curMarkers.push(marker);
                     }
                     clusterGroup.addLayers(curMarkers);
                 } else if (obj.status === "complete") {
