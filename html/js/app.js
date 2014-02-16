@@ -5,6 +5,7 @@ var App = {
     curHeatLayer: null,
     clusterLayer: {}, // object to store point layer groups
     worker: null,
+    totalsWorker: null,
     initialize: function () {
         "use strict";
         
@@ -21,6 +22,8 @@ var App = {
             self.loadHeatMapLayer(self.map, data);
 
             self.loadClusterData(data, self.clusterLayer);
+
+            self.calcTotals(data);
 
             //NOTE: this refers to the dropdown
             $("#yearDropBtn").text(newYear);
@@ -83,6 +86,8 @@ var App = {
         var data = this.downloadQueue.getResult("crimeData2013");
         this.loadHeatMapLayer(this.map, data);
         $("#progressContainer").css("display", "none");
+        
+        this.calcTotals(data);
         
         this.loadClusterData(data, this.clusterLayer);
     },
@@ -151,6 +156,32 @@ var App = {
 
             //pass in the Leaflet object to the worker
             this.worker.postMessage(data);
+        } else {
+            alert("Web workers aren't supported on your browser. No plotting for you!");
+        }
+    },
+    calcTotals: function (data) {
+        "use strict";
+        
+        if (typeof (Worker) !== "undefined") {
+            //if a worker is running, stop it
+            if (this.totalsWorker !== null) {
+                this.totalsWorker.terminate();
+            }
+
+            this.totalsWorker = new Worker("js/workers/calcTotalsWorker.js");
+
+            this.totalsWorker.onmessage = function (e) {
+                var totals = e.data,
+                    curTotal;
+                
+                for (curTotal in totals) {
+                    console.log("cur total:" + curTotal +  " = " + totals[curTotal]);
+                }
+            };
+
+            //start the web worker
+            this.totalsWorker.postMessage(data);
         } else {
             alert("Web workers aren't supported on your browser. No plotting for you!");
         }
