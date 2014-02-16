@@ -1,5 +1,6 @@
-/*global document, $, L, createjs, Worker, setTimeout, Handlebars */
-/*jslint plusplus: true */
+/*jslint plusplus: true, nomen: true */
+/*global document, $, L, createjs, Worker, setTimeout, Handlebars, window, _*/
+
 var App = window.App || {},
     MainApp = {
         map: null,
