@@ -55,15 +55,28 @@
             <span class="meter"></span>
         </div>
     </div>
+    
+    <div id="crimeTotals">
+    </div>
 
     <div id="messageModal" class="reveal-modal tiny" data-reveal>
         <p class="lead">Your couch.  It is mine.</p>
         <a class="close-reveal-modal">&#215;</a>
     </div>
 
+    <!-- handlebars templates -->
+    <script id="crimeTotalsTemplate" type="text/x-handlebars-template">
+        <h3>Crime Totals</h3>
+        
+        {{#listCrime crimeData}}
+            {{offense}}: {{total}}
+        {{/listCrime}}
+    </script>
+
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/fastclick/lib/fastclick.js"></script>
     <script src="bower_components/foundation/js/foundation.min.js"></script>
+    <script src="bower_components/handlebars/handlebars.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

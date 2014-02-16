@@ -1,22 +1,28 @@
-/*global importScripts, _ */
+/*global importScripts, _, postMessage, self, onmessage */
 importScripts("../../bower_components/underscore/underscore.js");
-
-var results = {};
 
 function calcTotals(data) {
     "use strict";
 
-    var curCrimeType;
+    var results = {},
+        curCrimeType,
+        finalArray = [];
     _.each(data, function (val) {
         curCrimeType = val[2];
-        if (!self.results[curCrimeType]) {
-            self.results[curCrimeType] = 1;
+        if (!results[curCrimeType]) {
+            results[curCrimeType] = 1;
         } else {
-            self.results[curCrimeType] += 1;
+            results[curCrimeType] += 1;
         }
     });
     
-    postMessage(self.results);
+    for (curCrimeType in results ) {
+        if (results.hasOwnProperty(curCrimeType)) {
+            finalArray.push({ offense: curCrimeType, total: results[curCrimeType]});
+        }
+    }
+
+    postMessage(finalArray);
 }
 
 onmessage = function (e) {

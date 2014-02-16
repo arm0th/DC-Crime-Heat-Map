@@ -1,4 +1,4 @@
-/*global document, $, L, createjs, Worker, setTimeout */
+/*global document, $, L, createjs, Worker, setTimeout, Handlebars */
 /*jslint plusplus: true */
 var App = {
     map: null,
@@ -38,6 +38,8 @@ var App = {
             $("#layerButtons a").removeClass("activeButton");
             btnEl.addClass("activeButton");
         });
+
+        this.registerHandlebarsHelpers();
     },
     initMap: function () {
         "use strict";
@@ -61,6 +63,21 @@ var App = {
         this.clusterLayer.addTo(map);
 
         return map;
+    },
+    registerHandlebarsHelpers: function () {
+        "use strict";
+
+        Handlebars.registerHelper('listCrime', function (items, options) {
+            var key,
+                idx,
+                html = "<ul>\n";
+
+            for (idx = 0; idx < items.length; idx++) {
+                html += "\t<li>"  + options.fn(items[idx]) + "</li>\n";
+            }
+
+            return html + "</ul>";
+        });
     },
     loadHeatMapLayer: function (m, crimeData) {
         "use strict";
@@ -163,6 +180,8 @@ var App = {
     calcTotals: function (data) {
         "use strict";
         
+        var parent = this;
+
         if (typeof (Worker) !== "undefined") {
             //if a worker is running, stop it
             if (this.totalsWorker !== null) {
@@ -173,11 +192,21 @@ var App = {
 
             this.totalsWorker.onmessage = function (e) {
                 var totals = e.data,
-                    curTotal;
+                    curTotal,
+                    template,
+                    htmlStr;
                 
                 for (curTotal in totals) {
-                    console.log("cur total:" + curTotal +  " = " + totals[curTotal]);
+                    if (totals.hasOwnProperty(curTotal)) {
+                        console.log("cur total:" + curTotal +  " = " + totals[curTotal]);
+                    }
                 }
+                
+                //populate totals
+                //TODO: cache template
+                template = Handlebars.compile($("#crimeTotalsTemplate").html());
+                htmlStr = template({crimeData: totals });
+                $("#crimeTotals").html(htmlStr);
             };
 
             //start the web worker

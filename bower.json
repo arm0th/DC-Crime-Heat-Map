@@ -28,6 +28,7 @@
     "leaflet.markercluster": "~0.4.0",
     "mapbox.js.compiled": "~1.5.3",
     "createjs-preloadjs": "*",
-    "underscore": "~1.6.0"
+    "underscore": "~1.6.0",
+    "handlebars": "~1.3.0"
   }
 }

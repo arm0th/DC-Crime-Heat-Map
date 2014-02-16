@@ -92,6 +92,14 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
     z-index: 4;
 }
 
+#crimeTotals {
+    position: absolute;
+    left: 5px;
+    bottom: 5px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 2px 15px;
+}
 .leaflet-control-zoom {
     top: 60px;
 }
