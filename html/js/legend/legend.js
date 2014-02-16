@@ -29,7 +29,7 @@ App.MapLegendView = Backbone.View.extend({
     template: {},
     templateEl: "#crimeTotalsTemplate",
     render: function() {
-        this.$el.html(this.template(this.model));
+        this.$el.html(this.template(this.model.toJSON()));
     }
 });
 
