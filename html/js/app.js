@@ -6,6 +6,11 @@ var App = {
     clusterLayer: {}, // object to store point layer groups
     worker: null,
     totalsWorker: null,
+    config: {
+        minZoom: 11,
+        startZoom: 12,
+        maxZoom: 19
+    },
     initialize: function () {
         "use strict";
         
@@ -45,14 +50,15 @@ var App = {
         "use strict";
 
         //set up map
-        var map = L.mapbox.map('map', 'uknowho.map-wc8j7l0g', {
-                minZoom: 11,
-                maxZoom: 20
-            }).setView([38.9, -77.02], 12);
+        var parent = this,
+            map = L.mapbox.map('map', 'uknowho.map-wc8j7l0g', {
+                minZoom: parent.config.minZoom,
+                maxZoom: parent.config.maxZoom
+            }).setView([38.9, -77.02], parent.config.startZoom);
 
         //add heat layer with empty set for now
         this.curHeatLayer = L.heatLayer([], {
-            maxZoom: 20,
+            maxZoom: parent.config.maxZoom,
             max: 0.7,
             radius: 30
         });
