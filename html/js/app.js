@@ -1,15 +1,18 @@
 /*global document, $, L, createjs, Worker, setTimeout, Handlebars */
 /*jslint plusplus: true */
-var App = {
+var App = window.App || {},
+    MainApp = {
     map: null,
     curHeatLayer: null,
     clusterLayer: {}, // object to store point layer groups
     worker: null,
     totalsWorker: null,
+    legendView: null,
     config: {
         minZoom: 11,
         startZoom: 12,
-        maxZoom: 19
+        maxZoom: 19,
+        startCoords: [38.9, -77.02]
     },
     initialize: function () {
         "use strict";
@@ -54,7 +57,7 @@ var App = {
             map = L.mapbox.map('map', 'uknowho.map-wc8j7l0g', {
                 minZoom: parent.config.minZoom,
                 maxZoom: parent.config.maxZoom
-            }).setView([38.9, -77.02], parent.config.startZoom);
+            }).setView(parent.config.startCoords, parent.config.startZoom);
 
         //add heat layer with empty set for now
         this.curHeatLayer = L.heatLayer([], {
@@ -186,7 +189,14 @@ var App = {
     calcTotals: function (data) {
         "use strict";
         
-        var parent = this;
+        var parent = this,
+            legendModel = new this.MapLegendModel({
+                crimeTotals: new parent.CrimeTotalsCollection(),
+            });
+        
+        if (this.legendView === null) {
+            this.legendView = new this.MapLegendView({model: legendModel});
+        }
 
         if (typeof (Worker) !== "undefined") {
             //if a worker is running, stop it
@@ -210,9 +220,10 @@ var App = {
                 
                 //populate totals
                 //TODO: cache template
-                template = Handlebars.compile($("#crimeTotalsTemplate").html());
-                htmlStr = template({crimeData: totals });
-                $("#crimeTotals").html(htmlStr);
+                //template = Handlebars.compile($("#crimeTotalsTemplate").html());
+                //htmlStr = template({crimeTotals: totals });
+                //$("#crimeTotals").html(htmlStr);
+                parent.legendView.model.set({crimeTotals: totals });
             };
 
             //start the web worker
@@ -244,6 +255,9 @@ $(function () {
 
     //initialize foundation
     $(document).foundation();
-
+    
+    //extend everything from main app
+    _.extend(App, MainApp);
+    
     App.initialize();
 });
