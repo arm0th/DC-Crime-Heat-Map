@@ -116,7 +116,7 @@ var App = window.App || {},
 
             this.calcTotals(data);
 
-            this.loadClusterData(data, this.clusterLayer);
+            //this.loadClusterData(data, this.clusterLayer);
         },
         downloadData: function () {
             "use strict";

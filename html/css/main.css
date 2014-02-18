@@ -93,15 +93,26 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
 }
 
 #crimeTotals {
-    position: absolute;
-    left: 5px;
-    bottom: 5px;
+    position: relative;
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 2px 15px;
 }
+
 .leaflet-control-zoom {
     top: 60px;
+}
+
+#mapLegend {
+    position: fixed;
+    bottom: 0px;
+    left: 5px;
+    margin: 0px;
+    z-index: 100; /* the leaflet zoomcontrol is set to 7 and the foundation fixed class is set to 99 */
+}
+
+#legendToggleBtn {
+    margin: 0px;
 }
 
 /* small screen media query customizations */
