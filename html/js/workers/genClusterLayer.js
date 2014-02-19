@@ -1,9 +1,9 @@
 /*global onmessage, self, setTimeout, clearTimeout, postMessage */
 var curStartIdx = 0,
-    chunkOffset = 512,
+    chunkOffset = 1500,
     data = [],
     dataLen = 0,
-    timeoutVal = 100, //milliseconds
+    timeoutVal = 300, //milliseconds
     timeoutObj;
 
 function processChunk() {
