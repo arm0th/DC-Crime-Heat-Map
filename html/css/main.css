@@ -99,6 +99,12 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
     padding: 2px 15px;
 }
 
+#crimeTotals ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 .leaflet-control-zoom {
     top: 60px;
 }
@@ -139,4 +145,8 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
        top: 80px;
     }
 
+}
+
+#messageModal p {
+    text-align: center;
 }

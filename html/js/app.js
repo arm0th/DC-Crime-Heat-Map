@@ -237,7 +237,7 @@ var App = window.App || {},
             "use strict";
 
             //populate data with text
-            $("#messageModal p").text(msg);
+            $("#messageModal p").html("<h5>" + msg + "</h5>");
 
             //show modal
             $('#messageModal').foundation('reveal', 'open');
