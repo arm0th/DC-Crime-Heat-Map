@@ -15,6 +15,39 @@ var App = window.App || {},
             maxZoom: 19,
             startCoords: [38.9, -77.02]
         },
+        icons: {
+            RedIcon: L.Icon.Default.extend({
+	            options: {
+                    iconUrl: '../images/marker-icon-red.png'
+                }
+            }),
+            TheftIcon: L.Icon.Default.extend({
+                options: {
+                    iconUrl: '../images/theft.png'
+                }
+            }),
+            HomicideIcon: L.Icon.Default.extend({
+                options: {
+                    iconUrl: '../images/homicide.png'
+                }
+            }),
+            CarIcon: L.Icon.Default.extend({
+                options: {
+                    iconUrl: '../images/car.png'
+                }
+            }),
+            RobberyIcon: L.Icon.Default.extend({
+                options: {
+                    iconUrl: '../images/robbery.png'
+                }
+            }),
+            SexAssultIcon:  L.Icon.Default.extend({
+                options: {
+                    iconUrl: '../images/sex_assult.png'
+                }
+            })
+            
+        },
         initialize: function () {
             "use strict";
 
@@ -69,7 +102,21 @@ var App = window.App || {},
             this.curHeatLayer.addTo(map);
 
             //create cluster layer where all the points are held
-            this.clusterLayer = L.markerClusterGroup();
+            this.clusterLayer = L.markerClusterGroup({
+                iconCreateFunction: function (cluster) {
+                    var childCount = cluster.getChildCount(),
+						c = ' marker-cluster-';
+                    if (childCount < 10) {
+                        c += 'small';
+                    } else if (childCount < 100) {
+                        c += 'medium';
+                    } else {
+                        c += 'large';
+                    }
+
+                    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+                }
+            });
             this.clusterLayer.addTo(map);
 
             return map;
@@ -164,13 +211,16 @@ var App = window.App || {},
                         idx,
                         curCoord,
                         marker,
-                        curMarkers = [];
+                        curMarkers = [],
+                        options = {};
                     if (obj.status === "loading") {
 
 
                         for (idx = 0; idx < obj.data.length; idx++) {
                             curCoord = obj.data[idx];
-                            marker = L.marker([curCoord[0], curCoord[1]]);
+                            options = { icon: parent.IconFactory(curCoord[2]) };
+
+                            marker = L.marker([curCoord[0], curCoord[1]], options);
                             marker.bindPopup(curCoord[2]);
                             curMarkers.push(marker);
                         }
@@ -232,6 +282,24 @@ var App = window.App || {},
             } else {
                 alert("Web workers aren't supported on your browser. No plotting for you!");
             }
+        },
+        IconFactory: function (offenseType) {
+            "use strict";
+
+            var icon = null;
+            if (offenseType.match(/HOMICIDE/)) {
+                icon = new this.icons.HomicideIcon();
+            } else if (offenseType.match(/MOTOR VEHICLE.*/)) {
+                icon = new this.icons.CarIcon();
+            } else if (offenseType.match(/.*THEFT.*/)) {
+                icon = new this.icons.TheftIcon();
+            } else if (offenseType.match(/ROBBERY/)) {
+                icon = new this.icons.RobberyIcon();
+            } else {
+                icon = new this.icons.RedIcon();
+            }
+            
+            return icon;
         },
         showMessage: function (msg) {
             "use strict";
