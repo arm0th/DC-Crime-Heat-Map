@@ -121,6 +121,18 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
     margin: 0px;
 }
 
+#messageModal p {
+    text-align: center;
+}
+
+/* marker colors */
+.marker-cluster-small div {
+    background-color: rgba(57, 86, 204, 0.6);
+}
+.marker-cluster-large div {
+    background-color: rgba(255, 31, 31, 0.6);
+}
+
 /* small screen media query customizations */
 @media only screen and (max-width: 40em) { 
     /* on smaller screens we want the year button to center */
@@ -147,6 +159,3 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
 
 }
 
-#messageModal p {
-    text-align: center;
-}
