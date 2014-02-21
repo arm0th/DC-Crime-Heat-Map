@@ -17,6 +17,7 @@ coordsList = []
 outputFile = ""
 latCol = 8
 lonCol = 7
+offenseCol = -1
 
 if len(sys.argv) != 2:
     print 'Supply crimedata CSV!'
@@ -44,6 +45,7 @@ with open(csvFilename, 'r') as csvFile:
                 latCol = row.index("LATITUDE")
                 lonCol = row.index("LONGITUDE")
 
+            offenseCol = row.index("OFFENSE")
             wasSkipped = 1
             continue
 
@@ -70,7 +72,7 @@ with open(csvFilename, 'r') as csvFile:
 
         #for now we are just dumping everything into arrays
         #coordsList.append({ "latitude" : curCoords[1], "longitude": curCoords[0]})
-        coordsList.append([ round(curCoords[1], 6), round(curCoords[0], 6)])
+        coordsList.append([ round(curCoords[1], 6), round(curCoords[0], 6), row[offenseCol] ])
         curLine = curLine + 1
 
 print json.dumps(coordsList)
