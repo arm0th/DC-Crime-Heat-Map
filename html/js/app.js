@@ -189,8 +189,6 @@ var App = window.App || {},
                         curMarkers = [],
                         options = {};
                     if (obj.status === "loading") {
-
-
                         for (idx = 0; idx < obj.data.length; idx++) {
                             curCoord = obj.data[idx];
                             options = { icon: parent.IconFactory.genIcon(curCoord[2]) };
@@ -238,17 +236,6 @@ var App = window.App || {},
                         template,
                         htmlStr;
 
-//                    for (curTotal in totals) {
-//                        if (totals.hasOwnProperty(curTotal)) {
-//                            console.log("cur total:" + curTotal +  " = " + totals[curTotal]);
-//                        }
-//                    }
-
-                    //populate totals
-                    //TODO: cache template
-                    //template = Handlebars.compile($("#crimeTotalsTemplate").html());
-                    //htmlStr = template({crimeTotals: totals });
-                    //$("#crimeTotals").html(htmlStr);
                     parent.legendView.model.set({crimeTotals: totals });
                 };
 
@@ -319,11 +306,11 @@ var App = window.App || {},
                     iconKey = "HomicideIcon";
                 } else if (offenseType.match(/MOTOR VEHICLE/)) {
                     iconKey = "CarIcon";
-                } else if (offenseType.match(/.*THEFT.*/)) {
+                } else if (offenseType.match(/[\w\W]*THEFT[\w\W]*/)) {
                     iconKey = "TheftIcon";
                 } else if (offenseType.match(/ROBBERY/)) {
                     iconKey = "RobberyIcon";
-                } else if (offenseType.match(/SEX.*/)) {
+                } else if (offenseType.match(/SEX[\w\W]*/)) {
                     iconKey = "SexAssultIcon";
                 } else {
                     iconKey = "RedIcon";
