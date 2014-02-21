@@ -275,26 +275,36 @@ var App = window.App || {},
                 }),
                 TheftIcon: L.Icon.Default.extend({
                     options: {
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 30],
                         iconUrl: '../images/theft.png'
                     }
                 }),
                 HomicideIcon: L.Icon.Default.extend({
                     options: {
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 30],
                         iconUrl: '../images/homicide.png'
                     }
                 }),
                 CarIcon: L.Icon.Default.extend({
                     options: {
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 30],
                         iconUrl: '../images/car.png'
                     }
                 }),
                 RobberyIcon: L.Icon.Default.extend({
                     options: {
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 30],
                         iconUrl: '../images/robbery.png'
                     }
                 }),
                 SexAssultIcon:  L.Icon.Default.extend({
                     options: {
+                        iconSize: [30, 30],
+                        iconAnchor: [15, 30],
                         iconUrl: '../images/sex_assult.png'
                     }
                 })
