@@ -15,39 +15,6 @@ var App = window.App || {},
             maxZoom: 19,
             startCoords: [38.9, -77.02]
         },
-        icons: {
-            RedIcon: L.Icon.Default.extend({
-	            options: {
-                    iconUrl: '../images/marker-icon-red.png'
-                }
-            }),
-            TheftIcon: L.Icon.Default.extend({
-                options: {
-                    iconUrl: '../images/theft.png'
-                }
-            }),
-            HomicideIcon: L.Icon.Default.extend({
-                options: {
-                    iconUrl: '../images/homicide.png'
-                }
-            }),
-            CarIcon: L.Icon.Default.extend({
-                options: {
-                    iconUrl: '../images/car.png'
-                }
-            }),
-            RobberyIcon: L.Icon.Default.extend({
-                options: {
-                    iconUrl: '../images/robbery.png'
-                }
-            }),
-            SexAssultIcon:  L.Icon.Default.extend({
-                options: {
-                    iconUrl: '../images/sex_assult.png'
-                }
-            })
-            
-        },
         initialize: function () {
             "use strict";
 
@@ -218,7 +185,7 @@ var App = window.App || {},
 
                         for (idx = 0; idx < obj.data.length; idx++) {
                             curCoord = obj.data[idx];
-                            options = { icon: parent.IconFactory(curCoord[2]) };
+                            options = { icon: parent.IconFactory.genIcon(curCoord[2]) };
 
                             marker = L.marker([curCoord[0], curCoord[1]], options);
                             marker.bindPopup(curCoord[2]);
@@ -263,11 +230,11 @@ var App = window.App || {},
                         template,
                         htmlStr;
 
-                    for (curTotal in totals) {
-                        if (totals.hasOwnProperty(curTotal)) {
-                            console.log("cur total:" + curTotal +  " = " + totals[curTotal]);
-                        }
-                    }
+//                    for (curTotal in totals) {
+//                        if (totals.hasOwnProperty(curTotal)) {
+//                            console.log("cur total:" + curTotal +  " = " + totals[curTotal]);
+//                        }
+//                    }
 
                     //populate totals
                     //TODO: cache template
@@ -283,23 +250,75 @@ var App = window.App || {},
                 alert("Web workers aren't supported on your browser. No plotting for you!");
             }
         },
-        IconFactory: function (offenseType) {
-            "use strict";
+        IconFactory: {
+            iconURLs: {
+                RedIcon: '../images/marker-icon-red.png',
+                TheftIcon: '../images/theft.png',
+                HomicideIcon: '../images/homicide.png',
+                CarIcon: '../images/car.png',
+                RobberyIcon: '../images/robbery.png',
+                SexAssultIcon: '../images/sex_assult.png'
+            },
+            icons: {
+                RedIcon: L.Icon.Default.extend({
+                    options: {
+                        iconUrl: '../images/marker-icon-red.png'
+                    }
+                }),
+                TheftIcon: L.Icon.Default.extend({
+                    options: {
+                        iconUrl: '../images/theft.png'
+                    }
+                }),
+                HomicideIcon: L.Icon.Default.extend({
+                    options: {
+                        iconUrl: '../images/homicide.png'
+                    }
+                }),
+                CarIcon: L.Icon.Default.extend({
+                    options: {
+                        iconUrl: '../images/car.png'
+                    }
+                }),
+                RobberyIcon: L.Icon.Default.extend({
+                    options: {
+                        iconUrl: '../images/robbery.png'
+                    }
+                }),
+                SexAssultIcon:  L.Icon.Default.extend({
+                    options: {
+                        iconUrl: '../images/sex_assult.png'
+                    }
+                })
 
-            var icon = null;
-            if (offenseType.match(/HOMICIDE/)) {
-                icon = new this.icons.HomicideIcon();
-            } else if (offenseType.match(/MOTOR VEHICLE.*/)) {
-                icon = new this.icons.CarIcon();
-            } else if (offenseType.match(/.*THEFT.*/)) {
-                icon = new this.icons.TheftIcon();
-            } else if (offenseType.match(/ROBBERY/)) {
-                icon = new this.icons.RobberyIcon();
-            } else {
-                icon = new this.icons.RedIcon();
+            },
+            getIconKey: function (offenseType) {
+                "use strict";
+
+                var iconKey;
+
+                if (offenseType.match(/HOMICIDE/)) {
+                    iconKey = "HomicideIcon";
+                } else if (offenseType.match(/MOTOR VEHICLE/)) {
+                    iconKey = "CarIcon";
+                } else if (offenseType.match(/.*THEFT.*/)) {
+                    iconKey = "TheftIcon";
+                } else if (offenseType.match(/ROBBERY/)) {
+                    iconKey = "RobberyIcon";
+                } else {
+                    iconKey = "RedIcon";
+                }
+
+                return iconKey;
+            },
+            genIcon: function (offenseType) {
+                "use strict";
+
+                var iconKey = this.getIconKey(offenseType);
+
+                //instanciate icon and return it
+                return new this.icons[iconKey]();
             }
-            
-            return icon;
         },
         showMessage: function (msg) {
             "use strict";
