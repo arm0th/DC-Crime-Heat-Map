@@ -117,6 +117,14 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
     z-index: 100; /* the leaflet zoomcontrol is set to 7 and the foundation fixed class is set to 99 */
 }
 
+#mapLegend li {
+    margin: 5px 10px;
+}
+
+.mapLegendIcon {
+    height: 25px;
+}
+
 #legendToggleBtn {
     margin: 0px;
 }
@@ -132,6 +140,7 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
 .marker-cluster-large div {
     background-color: rgba(255, 31, 31, 0.6);
 }
+
 
 /* small screen media query customizations */
 @media only screen and (max-width: 40em) { 

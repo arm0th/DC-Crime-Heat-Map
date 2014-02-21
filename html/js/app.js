@@ -91,13 +91,21 @@ var App = window.App || {},
         registerHandlebarsHelpers: function () {
             "use strict";
 
+            var parent = this;
+
             Handlebars.registerHelper('listCrime', function (items, options) {
                 var key,
                     idx,
+                    curData,
+                    curImgTag,
                     html = "<ul>\n";
 
                 for (idx = 0; idx < items.length; idx++) {
-                    html += "\t<li>"  + options.fn(items[idx]) + "</li>\n";
+                    curData = items[idx];
+                    curImgTag = '<img class="mapLegendIcon" src="' +
+                                parent.IconFactory.getIconPath(curData.offense) +
+                                '" alt="' + curData.offense + ' Icon" >';
+                    html += "\t<li>" + curImgTag + " " + options.fn(curData) + "</li>\n";
                 }
 
                 return html + "</ul>";
@@ -305,11 +313,21 @@ var App = window.App || {},
                     iconKey = "TheftIcon";
                 } else if (offenseType.match(/ROBBERY/)) {
                     iconKey = "RobberyIcon";
+                } else if (offenseType.match(/SEX.*/)) {
+                    iconKey = "SexAssultIcon";
                 } else {
                     iconKey = "RedIcon";
                 }
 
                 return iconKey;
+            },
+            getIconPath: function (offenseType) {
+                "use strict";
+
+                var iconKey = this.getIconKey(offenseType);
+                
+                //return relative URL path based off of iconKey
+                return this.iconURLs[iconKey];
             },
             genIcon: function (offenseType) {
                 "use strict";
