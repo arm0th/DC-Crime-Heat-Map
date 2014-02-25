@@ -1,5 +1,5 @@
 /*jslint plusplus:true */
-/*global */
+/*global exports */
 
 function capitalizeStr(str) {
     "use strict";
@@ -12,4 +12,9 @@ function capitalizeStr(str) {
     }
     
     return retStr;
+}
+
+// export if running under node
+if (typeof exports !== 'undefined') {
+    exports.capitalizeStr = capitalizeStr;
 }
