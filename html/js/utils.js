@@ -1,14 +1,23 @@
-/*jslint plusplus:true */
+/*jslint plusplus:true, regexp: true */
 /*global exports */
 
 function capitalizeStr(str) {
     "use strict";
 
-    var retStr = "";
+    var retStr = "",
+        newStr,
+        tokens;
 
     if (str) {
-        retStr = str.substr(0, 1).toUpperCase() +
-                 str.substr(1, str.length - 1).toLowerCase();
+        retStr = str;
+        tokens = str.split(/[^\.]\.\s+/);
+
+        tokens.forEach(function (s) {
+            newStr = s.substr(0, 1).toUpperCase() +
+                     s.substr(1, s.length - 1).toLowerCase();
+            retStr = retStr.replace(s, newStr);
+        });
+
     }
     
     return retStr;
