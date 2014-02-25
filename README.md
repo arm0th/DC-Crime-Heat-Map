@@ -49,3 +49,12 @@ $ ./getCrimeData.sh
 ```
 
 The download script retrieves the data, uncompresses and then uses a python script to parse the data, convert the coordinates and output json files into the html/js/data folder.
+
+## Unit Tests
+
+The [Mocha](http://visionmedia.github.io/mocha/) test framework is used for unit tests in addition to [Chai](http://chaijs.com/) for the assertions. To run the test suite, enter the following command:
+
+```bash
+$ npm test
+```
+
