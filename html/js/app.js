@@ -1,5 +1,5 @@
 /*jslint plusplus: true, nomen: true */
-/*global document, $, L, createjs, Worker, setTimeout, Handlebars, window, _*/
+/*global document, $, L, createjs, Worker, setTimeout, Handlebars, window, _, capitalizeStr*/
 
 var App = window.App || {},
     MainApp = {
@@ -102,6 +102,7 @@ var App = window.App || {},
 
                 for (idx = 0; idx < items.length; idx++) {
                     curData = items[idx];
+                    curData.offense = capitalizeStr(curData.offense);
                     curImgTag = '<img class="mapLegendIcon" src="' +
                                 parent.IconFactory.getIconPath(curData.offense) +
                                 '" alt="' + curData.offense + ' Icon" >';
@@ -302,15 +303,15 @@ var App = window.App || {},
 
                 var iconKey;
 
-                if (offenseType.match(/HOMICIDE/)) {
+                if (offenseType.match(/HOMICIDE/i)) {
                     iconKey = "HomicideIcon";
-                } else if (offenseType.match(/MOTOR VEHICLE/)) {
+                } else if (offenseType.match(/MOTOR VEHICLE/i)) {
                     iconKey = "CarIcon";
-                } else if (offenseType.match(/[\w\W]*THEFT[\w\W]*/)) {
+                } else if (offenseType.match(/[\w\W]*THEFT[\w\W]*/i)) {
                     iconKey = "TheftIcon";
-                } else if (offenseType.match(/ROBBERY/)) {
+                } else if (offenseType.match(/ROBBERY/i)) {
                     iconKey = "RobberyIcon";
-                } else if (offenseType.match(/SEX[\w\W]*/)) {
+                } else if (offenseType.match(/SEX[\w\W]*/i)) {
                     iconKey = "SexAssultIcon";
                 } else {
                     iconKey = "RedIcon";
