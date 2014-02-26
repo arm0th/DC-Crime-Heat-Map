@@ -1,5 +1,5 @@
 /*jslint plusplus: true, nomen: true */
-/*global document, $, L, createjs, Worker, setTimeout, Handlebars, window, _, capitalizeStr*/
+/*global document, $, L, createjs, Worker, setTimeout, Handlebars, window, _, capitalizeStr, insertCommas */
 
 var App = window.App || {},
     MainApp = {
@@ -72,7 +72,7 @@ var App = window.App || {},
             this.clusterLayer = L.markerClusterGroup({
                 iconCreateFunction: function (cluster) {
                     var childCount = cluster.getChildCount(),
-						c = ' marker-cluster-';
+                        c = ' marker-cluster-';
                     if (childCount < 10) {
                         c += 'small';
                     } else if (childCount < 100) {
@@ -81,7 +81,7 @@ var App = window.App || {},
                         c += 'large';
                     }
 
-                    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+                    return new L.DivIcon({ html: '<div><span>' + insertCommas(childCount) + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
                 }
             });
             this.clusterLayer.addTo(map);
@@ -103,6 +103,7 @@ var App = window.App || {},
                 for (idx = 0; idx < items.length; idx++) {
                     curData = items[idx];
                     curData.offense = capitalizeStr(curData.offense);
+                    curData.total = insertCommas(curData.total);
                     curImgTag = '<img class="mapLegendIcon" src="' +
                                 parent.IconFactory.getIconPath(curData.offense) +
                                 '" alt="' + curData.offense + ' Icon" >';
@@ -323,7 +324,7 @@ var App = window.App || {},
                 "use strict";
 
                 var iconKey = this.getIconKey(offenseType);
-                
+
                 //return relative URL path based off of iconKey
                 return this.iconURLs[iconKey];
             },
@@ -359,9 +360,9 @@ $(function () {
 
     //initialize foundation
     $(document).foundation();
-    
+
     //extend everything from main app
     _.extend(App, MainApp);
-    
+
     App.initialize();
 });
