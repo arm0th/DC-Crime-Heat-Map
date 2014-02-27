@@ -33,6 +33,7 @@ var App = window.App || {},
                 self.loadClusterData(data, self.clusterLayer);
 
                 self.calcTotals(data);
+                data = null;
 
                 //NOTE: this refers to the dropdown
                 $("#yearDropBtn").text(newYear);
@@ -102,12 +103,13 @@ var App = window.App || {},
 
                 for (idx = 0; idx < items.length; idx++) {
                     curData = items[idx];
-                    curData.offense = capitalizeStr(curData.offense);
-                    curData.total = insertCommas(curData.total);
                     curImgTag = '<img class="mapLegendIcon" src="' +
                                 parent.IconFactory.getIconPath(curData.offense) +
-                                '" alt="' + curData.offense + ' Icon" >';
-                    html += "\t<li>" + curImgTag + " " + options.fn(curData) + "</li>\n";
+                                '" alt="' + curData.offenseFormatted + ' icon" >';
+                    html += "\t<li>" + curImgTag + " " +
+                            options.fn(curData) +
+                            "<input class='mapLegendToggle' type='checkbox'>" +
+                            "</li>\n";
                 }
 
                 return html + "</ul>";
@@ -306,7 +308,7 @@ var App = window.App || {},
 
                 if (offenseType.match(/HOMICIDE/i)) {
                     iconKey = "HomicideIcon";
-                } else if (offenseType.match(/MOTOR VEHICLE/i)) {
+                } else if (offenseType.match(/MOTOR VEHICLE/i) || offenseType.match(/STOLEN AUTO/i)) {
                     iconKey = "CarIcon";
                 } else if (offenseType.match(/[\w\W]*THEFT[\w\W]*/i)) {
                     iconKey = "TheftIcon";

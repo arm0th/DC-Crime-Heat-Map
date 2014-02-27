@@ -4,8 +4,12 @@ window.App = window.App || {};
 
 //define backbone objects
 App.CrimeTotalsModel = Backbone.Model.extend({
+    id: "",
     offense: "",
-    total: 0
+    offenseFormatted: "",
+    isSelected: true,
+    total: 0,
+    totalFormatted: ""
 });
 
 App.CrimeTotalsCollection = Backbone.Collection.extend({
@@ -20,7 +24,8 @@ App.MapLegendView = Backbone.View.extend({
     el: "#mapLegend",
     crimeTotalsEl: "#crimeTotals",
     events: {
-        "click #legendToggleBtn": "legendBtnClickedHandler"
+        "click #legendToggleBtn": "legendBtnClickedHandler",
+        "change :checkbox": "legendToggleHandler"
     },
     initialize: function () {
         "use strict";
@@ -44,6 +49,11 @@ App.MapLegendView = Backbone.View.extend({
         }
 
         this.isShown = !this.isShown;
+    },
+    legendToggleHandler: function (e) {
+        "use strict";
+
+        alert("got it:" + e.target);
     },
     show: function () {
         "use strict";

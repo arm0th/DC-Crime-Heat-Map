@@ -15,7 +15,7 @@
     <script src="bower_components/createjs-preloadjs/lib/preloadjs-0.4.1.min.js"></script>
     <script src="bower_components/mapbox.js.compiled/mapbox.js"></script>
     <script src="js/vendor/leaflet-heat.js"></script>
-	<script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 </head>
 <body>
     <div id="outerHeader" class="row fixed">
@@ -55,7 +55,7 @@
             <span class="meter"></span>
         </div>
     </div>
-    
+
     <div id="mapLegend">
         <button id="legendToggleBtn" class="tiny">Map Legend</button>
         <div id="crimeTotals"></div>
@@ -69,9 +69,9 @@
     <!-- handlebars templates -->
     <script id="crimeTotalsTemplate" type="text/x-handlebars-template">
         <h3>Crime Totals</h3>
-        
+
         {{#listCrime crimeTotals}}
-            {{offense}}: {{total}}
+            {{offenseFormatted}}: {{totalFormatted}}
         {{/listCrime}}
     </script>
 
@@ -82,7 +82,7 @@
     <script src="bower_components/underscore/underscore.js"></script>
     <script src="bower_components/backbone/backbone.js"></script>
     <script src="bower_components/greensock/src/minified/TweenMax.min.js"></script>
-    
+
     <!-- legend code -->
     <script src="js/legend/legend.js"></script>
     <script src="js/utils.js"></script>
