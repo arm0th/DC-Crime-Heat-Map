@@ -53,7 +53,7 @@ App.MapLegendView = Backbone.View.extend({
     legendToggleHandler: function (e) {
         "use strict";
 
-        alert("got it:" + e.target);
+        this.trigger("mapLegned:legendToggled", "HOMICIDE");
     },
     show: function () {
         "use strict";

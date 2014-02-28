@@ -224,6 +224,10 @@ var App = window.App || {},
 
             if (this.legendView === null) {
                 this.legendView = new this.MapLegendView({model: legendModel});
+                //set up listener for when map legend is toggled
+                this.legendView.on("mapLegned:legendToggled", function (e) {
+                    alert("TODO: handle legend toggled event!");
+                });
             }
 
             if (typeof (Worker) !== "undefined") {
