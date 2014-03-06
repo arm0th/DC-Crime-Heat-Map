@@ -108,7 +108,9 @@ var App = window.App || {},
                                 '" alt="' + curData.offenseFormatted + ' icon" >';
                     html += "\t<li>" + curImgTag + " " +
                             options.fn(curData) +
-                            "<input class='mapLegendToggle' type='checkbox'>" +
+                            "<input class='mapLegendToggle' " +
+                            "data-offense='" + curData.offense + "' " +
+                            "type='checkbox' checked>" +
                             "</li>\n";
                 }
 
@@ -226,7 +228,7 @@ var App = window.App || {},
                 this.legendView = new this.MapLegendView({model: legendModel});
                 //set up listener for when map legend is toggled
                 this.legendView.on("mapLegned:legendToggled", function (e) {
-                    alert("TODO: handle legend toggled event!");
+                    alert("TODO: handle legend toggled event!" + e.offense);
                 });
             }
 
