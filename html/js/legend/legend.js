@@ -55,6 +55,7 @@ App.MapLegendView = Backbone.View.extend({
 
         var evt = {
             target: e.target,
+            isSelected: e.target.checked,
             offense: $(e.target).attr("data-offense")
         };
 
