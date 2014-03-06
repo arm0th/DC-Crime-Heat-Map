@@ -56,10 +56,24 @@ App.MapLegendView = Backbone.View.extend({
         var evt = {
             target: e.target,
             isSelected: e.target.checked,
-            offense: $(e.target).attr("data-offense")
+            offense: $(e.target).attr("data-offense"),
+            legendState: this.getLegendState($("#crimeTotals :checkbox"))
         };
 
         this.trigger("mapLegned:legendToggled", evt);
+    },
+    getLegendState: function (cbList) {
+        "use strict";
+        var legendState = [];
+
+        cbList.each(function (idx, curCbEl) {
+            legendState.push({
+                offense: curCbEl.getAttribute("data-offense"),
+                isSelected: curCbEl.checked
+            });
+        });
+
+        return legendState;
     },
     show: function () {
         "use strict";
