@@ -9,6 +9,7 @@ var App = window.App || {},
         worker: null,
         totalsWorker: null,
         legendView: null,
+        curYear: "2013", //TODO: do not hardcode this
         config: {
             minZoom: 11,
             startZoom: 12,
@@ -26,8 +27,9 @@ var App = window.App || {},
             this.map = this.initMap();
 
             $("#yearDropItems").click(function (e) {
-                var newYear = e.target.innerText,
-                    data = self.downloadQueue.getResult("crimeData" + newYear);
+                self.curYear = e.target.innerText;
+
+                var data = self.downloadQueue.getResult("crimeData" + self.curYear);
                 self.loadHeatMapLayer(self.map, data);
 
                 self.loadClusterData(data, self.clusterLayer);
@@ -36,7 +38,7 @@ var App = window.App || {},
                 data = null;
 
                 //NOTE: this refers to the dropdown
-                $("#yearDropBtn").text(newYear);
+                $("#yearDropBtn").text(self.curYear);
                 $(this).removeClass("open"); //should hide the dropdown but does not
                 this.style.left = "-999999px"; // TODO: find a better way!
             });
@@ -138,7 +140,7 @@ var App = window.App || {},
         downloadCompleteHandler: function () {
             "use strict";
 
-            var data = this.downloadQueue.getResult("crimeData2013");
+            var data = this.downloadQueue.getResult("crimeData" + this.curYear);
             this.loadHeatMapLayer(this.map, data);
             $("#progressContainer").css("display", "none");
 
@@ -169,7 +171,7 @@ var App = window.App || {},
 
             return queue;
         },
-        loadClusterData: function (data, clusterGroup) {
+        loadClusterData: function (data, clusterGroup, legendState) {
             "use strict";
 
             var parent = this;
@@ -211,7 +213,10 @@ var App = window.App || {},
                 };
 
                 //pass in the Leaflet object to the worker
-                this.worker.postMessage(data);
+                this.worker.postMessage({
+                    data: data,
+                    filter: legendState
+                });
             } else {
                 alert("Web workers aren't supported on your browser. No plotting for you!");
             }
@@ -228,7 +233,10 @@ var App = window.App || {},
                 this.legendView = new this.MapLegendView({model: legendModel});
                 //set up listener for when map legend is toggled
                 this.legendView.on("mapLegned:legendToggled", function (e) {
-                    alert("TODO: handle legend toggled event!" + e.offense);
+                    var curData = parent.downloadQueue.getResult("crimeData" + parent.curYear);
+
+                    parent.loadClusterData(curData, parent.clusterLayer, e.legendState);
+                    //alert("TODO: handle legend toggled event!" + curData);
                 });
             }
 
