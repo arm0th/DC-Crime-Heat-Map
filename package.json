@@ -4,7 +4,7 @@
   "description": "A web app that displays historical heatmaps of crime occurances in Washington, DC",
   "main": "app.js",
   "scripts": {
-    "test": "mocha --reporter list"
+    "test": "mocha --reporter spec"
   },
   "repository": {
     "type": "git",
