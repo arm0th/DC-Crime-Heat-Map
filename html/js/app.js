@@ -9,7 +9,7 @@ var App = window.App || {},
         worker: null,
         totalsWorker: null,
         legendView: null,
-        curYear: "2013", //TODO: do not hardcode this
+        curYear: "2014", //TODO: do not hardcode this
         config: {
             minZoom: 11,
             startZoom: 12,
@@ -134,7 +134,8 @@ var App = window.App || {},
             { id: "crimeData2010", src: "js/data/crimeDataCoords_2010.json" },
             { id: "crimeData2011", src: "js/data/crimeDataCoords_2011.json" },
             { id: "crimeData2012", src: "js/data/crimeDataCoords_2012.json" },
-            { id: "crimeData2013", src: "js/data/crimeDataCoords_2013.json" }
+            { id: "crimeData2013", src: "js/data/crimeDataCoords_2013.json" },
+            { id: "crimeData2014", src: "js/data/crimeDataCoords_2014.json" }
         ],
         downloadQueue: {},
         downloadCompleteHandler: function () {
