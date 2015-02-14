@@ -11,10 +11,9 @@ The front-end portion of the app uses [MapBox's](http://www.mapbox.com) JavaScri
 To download and generate the data, the following is needed:
 
 * bash (if on Windows, install cygwin)
-* unzip
 * curl
 * python
-* [pyproj](https://code.google.com/p/pyproj/downloads/list) (version 1.9.3) python module
+* [pyproj](https://github.com/jswhit/pyproj/archive/v1.9.4rel.zip) (version 1.9.4) python module
 
 ## Installation
 
