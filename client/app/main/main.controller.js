@@ -64,31 +64,31 @@ app.controller('MainCtrl', function ($scope, $http, socket) {
                         maxZoom: parent.config.maxZoom
                     }).setView(parent.config.startCoords, parent.config.startZoom);
 
-                //add heat layer with empty set for now
-                this.curHeatLayer = L.heatLayer([], {
-                    maxZoom: parent.config.maxZoom,
-                    max: 0.7,
-                    radius: 30
-                });
-                this.curHeatLayer.addTo(map);
-
-                //create cluster layer where all the points are held
-                this.clusterLayer = L.markerClusterGroup({
-                    iconCreateFunction: function (cluster) {
-                        var childCount = cluster.getChildCount(),
-                            c = ' marker-cluster-';
-                        if (childCount < 10) {
-                            c += 'small';
-                        } else if (childCount < 100) {
-                            c += 'medium';
-                        } else {
-                            c += 'large';
-                        }
-
-                        return new L.DivIcon({ html: '<div><span>' + insertCommas(childCount) + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
-                    }
-                });
-                this.clusterLayer.addTo(map);
+//                //add heat layer with empty set for now
+//                this.curHeatLayer = L.heatLayer([], {
+//                    maxZoom: parent.config.maxZoom,
+//                    max: 0.7,
+//                    radius: 30
+//                });
+//                this.curHeatLayer.addTo(map);
+//
+//                //create cluster layer where all the points are held
+//                this.clusterLayer = L.markerClusterGroup({
+//                    iconCreateFunction: function (cluster) {
+//                        var childCount = cluster.getChildCount(),
+//                            c = ' marker-cluster-';
+//                        if (childCount < 10) {
+//                            c += 'small';
+//                        } else if (childCount < 100) {
+//                            c += 'medium';
+//                        } else {
+//                            c += 'large';
+//                        }
+//
+//                        return new L.DivIcon({ html: '<div><span>' + insertCommas(childCount) + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+//                    }
+//                });
+//                this.clusterLayer.addTo(map);
 
                 return map;
             },
@@ -148,7 +148,7 @@ app.controller('MainCtrl', function ($scope, $http, socket) {
 
                 this.calcTotals(data);
 
-                this.loadClusterData(data, this.clusterLayer);
+                //his.loadClusterData(data, this.clusterLayer);
             },
             downloadData: function () {
                 "use strict";
