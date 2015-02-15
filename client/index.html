@@ -7,15 +7,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="/">
-    <title></title>
+    <title>DC Crime Heat Map</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(client) app/vendor.css -->
       <!-- bower:css -->
-      <link rel="stylesheet" href="bower_components/foundation/css/foundation.css" />
       <!-- endbower -->
+
+      <link href="bower_components/mapbox.js.compiled/mapbox.css" rel="stylesheet" />
+      <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.css">
+      <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css">
     <!-- endbuild -->
+
     <!-- build:css({.tmp,client}) app/app.css -->
     <link rel="stylesheet" href="app/app.css">
       <!-- injector:css -->
@@ -47,12 +51,7 @@
     <![endif]-->
     <!-- build:js({client,node_modules}) app/vendor.js -->
       <!-- bower:js -->
-      <script src="bower_components/modernizr/modernizr.js"></script>
       <script src="bower_components/jquery/dist/jquery.js"></script>
-      <script src="bower_components/fastclick/lib/fastclick.js"></script>
-      <script src="bower_components/jquery.cookie/jquery.cookie.js"></script>
-      <script src="bower_components/jquery-placeholder/jquery.placeholder.js"></script>
-      <script src="bower_components/foundation/js/foundation.js"></script>
       <script src="bower_components/mapbox.js.compiled/mapbox.js"></script>
       <script src="bower_components/createjs-preloadjs/lib/preloadjs-0.6.0.combined.js"></script>
       <script src="bower_components/underscore/underscore.js"></script>
@@ -69,6 +68,7 @@
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
+      <script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
     <!-- endbuild -->
 
         <!-- build:js({.tmp,client}) app/app.js -->
@@ -76,6 +76,8 @@
           <!-- injector:js -->
           <script src="app/main/main.controller.js"></script>
           <script src="app/main/main.js"></script>
+          <script src="app/utils.js"></script>
+          <script src="app/vendor/leaflet-heat.js"></script>
           <script src="components/modal/modal.service.js"></script>
           <script src="components/navbar/navbar.controller.js"></script>
           <script src="components/socket/socket.service.js"></script>
