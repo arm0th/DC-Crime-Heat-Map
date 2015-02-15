@@ -1,5 +1,5 @@
 /*jslint plusplus: true, nomen: true */
-/*global document, $, L, createjs, Worker, setTimeout, Handlebars, window, _*/
+/*global document, $, L, createjs, Worker, setTimeout, Handlebars, window, _, capitalizeStr, insertCommas */
 
 var App = window.App || {},
     MainApp = {
@@ -9,6 +9,7 @@ var App = window.App || {},
         worker: null,
         totalsWorker: null,
         legendView: null,
+        curYear: "2014", //TODO: do not hardcode this
         config: {
             minZoom: 11,
             startZoom: 12,
@@ -26,16 +27,18 @@ var App = window.App || {},
             this.map = this.initMap();
 
             $("#yearDropItems").click(function (e) {
-                var newYear = e.target.innerText,
-                    data = self.downloadQueue.getResult("crimeData" + newYear);
+                self.curYear = e.target.innerText;
+
+                var data = self.downloadQueue.getResult("crimeData" + self.curYear);
                 self.loadHeatMapLayer(self.map, data);
 
                 self.loadClusterData(data, self.clusterLayer);
 
                 self.calcTotals(data);
+                data = null;
 
                 //NOTE: this refers to the dropdown
-                $("#yearDropBtn").text(newYear);
+                $("#yearDropBtn").text(self.curYear);
                 $(this).removeClass("open"); //should hide the dropdown but does not
                 this.style.left = "-999999px"; // TODO: find a better way!
             });
@@ -72,7 +75,7 @@ var App = window.App || {},
             this.clusterLayer = L.markerClusterGroup({
                 iconCreateFunction: function (cluster) {
                     var childCount = cluster.getChildCount(),
-						c = ' marker-cluster-';
+                        c = ' marker-cluster-';
                     if (childCount < 10) {
                         c += 'small';
                     } else if (childCount < 100) {
@@ -81,7 +84,7 @@ var App = window.App || {},
                         c += 'large';
                     }
 
-                    return new L.DivIcon({ html: '<div><span>' + childCount + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
+                    return new L.DivIcon({ html: '<div><span>' + insertCommas(childCount) + '</span></div>', className: 'marker-cluster' + c, iconSize: new L.Point(40, 40) });
                 }
             });
             this.clusterLayer.addTo(map);
@@ -104,8 +107,13 @@ var App = window.App || {},
                     curData = items[idx];
                     curImgTag = '<img class="mapLegendIcon" src="' +
                                 parent.IconFactory.getIconPath(curData.offense) +
-                                '" alt="' + curData.offense + ' Icon" >';
-                    html += "\t<li>" + curImgTag + " " + options.fn(curData) + "</li>\n";
+                                '" alt="' + curData.offenseFormatted + ' icon" >';
+                    html += "\t<li>" + curImgTag + " " +
+                            options.fn(curData) +
+                            "<input class='mapLegendToggle' " +
+                            "data-offense='" + curData.offense + "' " +
+                            "type='checkbox' checked>" +
+                            "</li>\n";
                 }
 
                 return html + "</ul>";
@@ -126,13 +134,14 @@ var App = window.App || {},
             { id: "crimeData2010", src: "js/data/crimeDataCoords_2010.json" },
             { id: "crimeData2011", src: "js/data/crimeDataCoords_2011.json" },
             { id: "crimeData2012", src: "js/data/crimeDataCoords_2012.json" },
-            { id: "crimeData2013", src: "js/data/crimeDataCoords_2013.json" }
+            { id: "crimeData2013", src: "js/data/crimeDataCoords_2013.json" },
+            { id: "crimeData2014", src: "js/data/crimeDataCoords_2014.json" }
         ],
         downloadQueue: {},
         downloadCompleteHandler: function () {
             "use strict";
 
-            var data = this.downloadQueue.getResult("crimeData2013");
+            var data = this.downloadQueue.getResult("crimeData" + this.curYear);
             this.loadHeatMapLayer(this.map, data);
             $("#progressContainer").css("display", "none");
 
@@ -163,7 +172,7 @@ var App = window.App || {},
 
             return queue;
         },
-        loadClusterData: function (data, clusterGroup) {
+        loadClusterData: function (data, clusterGroup, legendState) {
             "use strict";
 
             var parent = this;
@@ -205,7 +214,10 @@ var App = window.App || {},
                 };
 
                 //pass in the Leaflet object to the worker
-                this.worker.postMessage(data);
+                this.worker.postMessage({
+                    data: data,
+                    filter: legendState
+                });
             } else {
                 alert("Web workers aren't supported on your browser. No plotting for you!");
             }
@@ -220,6 +232,13 @@ var App = window.App || {},
 
             if (this.legendView === null) {
                 this.legendView = new this.MapLegendView({model: legendModel});
+                //set up listener for when map legend is toggled
+                this.legendView.on("mapLegned:legendToggled", function (e) {
+                    var curData = parent.downloadQueue.getResult("crimeData" + parent.curYear);
+
+                    parent.loadClusterData(curData, parent.clusterLayer, e.legendState);
+                    //alert("TODO: handle legend toggled event!" + curData);
+                });
             }
 
             if (typeof (Worker) !== "undefined") {
@@ -302,15 +321,15 @@ var App = window.App || {},
 
                 var iconKey;
 
-                if (offenseType.match(/HOMICIDE/)) {
+                if (offenseType.match(/HOMICIDE/i)) {
                     iconKey = "HomicideIcon";
-                } else if (offenseType.match(/MOTOR VEHICLE/)) {
+                } else if (offenseType.match(/MOTOR VEHICLE/i) || offenseType.match(/STOLEN AUTO/i)) {
                     iconKey = "CarIcon";
-                } else if (offenseType.match(/[\w\W]*THEFT[\w\W]*/)) {
+                } else if (offenseType.match(/[\w\W]*THEFT[\w\W]*/i)) {
                     iconKey = "TheftIcon";
-                } else if (offenseType.match(/ROBBERY/)) {
+                } else if (offenseType.match(/ROBBERY/i)) {
                     iconKey = "RobberyIcon";
-                } else if (offenseType.match(/SEX[\w\W]*/)) {
+                } else if (offenseType.match(/SEX[\w\W]*/i)) {
                     iconKey = "SexAssultIcon";
                 } else {
                     iconKey = "RedIcon";
@@ -322,7 +341,7 @@ var App = window.App || {},
                 "use strict";
 
                 var iconKey = this.getIconKey(offenseType);
-                
+
                 //return relative URL path based off of iconKey
                 return this.iconURLs[iconKey];
             },
@@ -358,9 +377,9 @@ $(function () {
 
     //initialize foundation
     $(document).foundation();
-    
+
     //extend everything from main app
     _.extend(App, MainApp);
-    
+
     App.initialize();
 });

@@ -55,8 +55,24 @@ function processChunk() {
 onmessage = function (e) {
     "use strict";
 
+    var filter = e.data.filter,
+        lookupHash = {};
+
     //save reference to data
-    self.data = e.data;
+    self.data = e.data.data;
+
+    if (filter !== undefined) {
+        //create lookup hash based on filter array
+        filter.forEach(function (curObj) {
+            lookupHash[curObj.offense] = curObj.isSelected;
+        });
+
+        self.data = self.data.filter(function (curArr) {
+            //if the offense type for the data point is in
+            //the list, then include it
+            return (lookupHash[curArr[2]] === true);
+        });
+    }
     self.dataLen = self.data.length;
 
     //start the timeout "loop"

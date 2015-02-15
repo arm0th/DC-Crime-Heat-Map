@@ -11,10 +11,9 @@ The front-end portion of the app uses [MapBox's](http://www.mapbox.com) JavaScri
 To download and generate the data, the following is needed:
 
 * bash (if on Windows, install cygwin)
-* unzip
 * curl
 * python
-* [pyproj](https://code.google.com/p/pyproj/downloads/list) (version 1.9.3) python module
+* [pyproj](https://github.com/jswhit/pyproj/archive/v1.9.4rel.zip) (version 1.9.4) python module
 
 ## Installation
 
@@ -49,3 +48,12 @@ $ ./getCrimeData.sh
 ```
 
 The download script retrieves the data, uncompresses and then uses a python script to parse the data, convert the coordinates and output json files into the html/js/data folder.
+
+## Unit Tests
+
+The [Mocha](http://visionmedia.github.io/mocha/) test framework is used for unit tests in addition to [Chai](http://chaijs.com/) for the assertions. To run the test suite, enter the following command:
+
+```bash
+$ npm test
+```
+

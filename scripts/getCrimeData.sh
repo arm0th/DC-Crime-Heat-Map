@@ -16,6 +16,7 @@ crimeDataURL2010=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_inc
 crimeDataURL2011=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2011_CSV.zip
 crimeDataURL2012=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2012_CSV.zip
 crimeDataURL2013=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2013_CSV.zip
+crimeDataURL2014=http://data.octo.dc.gov/feeds/crime_incidents/archive/crime_incidents_2014_CSV.zip
 
 function checkPath {
     pathBinary=$1
@@ -41,7 +42,7 @@ function downloadData {
 }
 
 function processData {
-    for csv in ${DATA_PATH}/*.csv; do 
+    for csv in ${DATA_PATH}/*.csv; do
         curYear=`echo $csv|sed 's/[^0-9]//g'`;
         echo -n "Converting CSV to json file for $curYear data ... "
         $PYTHON $PYTHON_PARSER $csv > "${JS_PATH}/${JS_PREFIX}_${curYear}.json"
@@ -67,7 +68,7 @@ downloadData $crimeDataURL2009 2009
 downloadData $crimeDataURL2010 2010
 downloadData $crimeDataURL2011 2011
 downloadData $crimeDataURL2012 2012
-downloadData $crimeDataURL2013 2013
+downloadData $crimeDataURL2014 2014
 
 #process all of the downloaded data
 processData

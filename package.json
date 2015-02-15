@@ -1,0 +1,29 @@
+{
+  "name": "DC-Crime-Heat-Map",
+  "version": "0.5.0",
+  "description": "A web app that displays historical heatmaps of crime occurances in Washington, DC",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/LonnyGomes/DC-Crime-Heat-Map.git"
+  },
+  "keywords": [
+    "crime",
+    "map",
+    "heatmap",
+    "trends",
+    "dc",
+    "washington"
+  ],
+  "author": "Lonny Gomes",
+  "license": "BSD",
+  "gitHead": "00e7d440fb2282010082ee18d98f61d161791630",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "mocha": "~1.17.1",
+    "chai": "~1.9.0"
+  }
+}

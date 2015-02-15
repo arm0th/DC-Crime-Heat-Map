@@ -125,6 +125,10 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
     height: 25px;
 }
 
+.mapLegendToggle {
+    float: right;
+}
+
 #legendToggleBtn {
     margin: 0px;
 }
@@ -143,18 +147,18 @@ body { margin: 0; padding: 0 ; font-family: 'open_sansregular', sans-serif; }
 
 
 /* small screen media query customizations */
-@media only screen and (max-width: 40em) { 
+@media only screen and (max-width: 40em) {
     /* on smaller screens we want the year button to center */
     #yearContainer {
         text-align: center;
         height: 55px;
     }
-    
+
     #header {
         text-align: center;
         font-size: 1.7em;
     }
-    
+
     /* make year dropdown span larger */
     #yearDropBtn {
         width: 100%;
