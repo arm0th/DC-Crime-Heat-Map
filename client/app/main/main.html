@@ -1,0 +1,85 @@
+<div class="navbar navbar-default navbar-static-top" ng-controller="NavbarCtrl as nav">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+                <img src="../../assets/images/DCFlag.png" alt="DC Crime Heatmap">
+            </a>
+        </div>
+        <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                <li ng-repeat="item in nav.menu" ng-class="{active: isActive(item.link)}">
+                    <a ng-href="{{item.link}}">{{item.title}}</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown" dropdown>
+                    <a href="#" class="dropdown-toggle" role="button" aria-expanded="false" dropdown-toggle><span class="caret">  </span><em>Current year</em>:  <b>{{nav.yearsData.curYear}}</b></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li ng-repeat="year in nav.yearsData.years">
+                            <a href="#" ng-click="nav.updateCurYear(year)">{{year}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="mapContainer">
+    <ul id="layerButtons" class="button-group radius" style="display: none;">
+        <li><a href="#" class="button small activeButton">Heatmap</a>
+        </li>
+        <li><a href="#" class="button small">Points</a>
+        </li>
+    </ul>
+    <div id="map"></div>
+
+</div>
+
+
+<div id="progressContainer">
+    LOADING DATA ...
+    <div id="progressBar" class="progress">
+        <span class="meter"></span>
+    </div>
+</div>
+
+<div id="mapLegend">
+    <button id="legendToggleBtn" class="tiny">Map Legend</button>
+    <div id="crimeTotals"></div>
+</div>
+
+<div id="messageModal" class="reveal-modal small" data-reveal>
+    <p class="lead"></p>
+    <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<!-- handlebars templates -->
+<!---
+<script id="crimeTotalsTemplate" >
+    <h3>Crime Totals</h3>
+
+    {#listCrime crimeTotals}
+        {{offenseFormatted}}: {{totalFormatted}}
+    {/listCrime}
+</script>
+--->
+
+<div class="container-fluid">
+    <footer class="footer">
+        <div class="container">
+            <p>Angular Fullstack v2.0.13 |
+                <a href="https://twitter.com/tyhenkel">@tyhenkel</a> |
+                <a href="https://github.com/DaftMonk/generator-angular-fullstack/issues?state=open">Issues</a>
+            </p>
+        </div>
+    </footer>
+</div>
