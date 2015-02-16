@@ -1,7 +1,7 @@
 'use strict';
 (function () {
     var app = angular.module('dcCrimeHeatmapApp');
-    app.controller('MainCtrl', function ($scope, $http, socket) {
+    app.controller('MainCtrl', function ($scope, $http, socket, crimeData) {
         var App = window.App || {},
             MainApp = {
                 map: null,
@@ -131,44 +131,6 @@
                         this.curHeatLayer.setLatLngs(crimeData);
                     }
                 },
-                dataURLs: [
-                    {
-                        id: "crimeData2006",
-                        src: "app/data/crimeDataCoords_2006.json"
-                    },
-                    {
-                        id: "crimeData2007",
-                        src: "app/data/crimeDataCoords_2007.json"
-                    },
-                    {
-                        id: "crimeData2008",
-                        src: "app/data/crimeDataCoords_2008.json"
-                    },
-                    {
-                        id: "crimeData2009",
-                        src: "app/data/crimeDataCoords_2009.json"
-                    },
-                    {
-                        id: "crimeData2010",
-                        src: "app/data/crimeDataCoords_2010.json"
-                    },
-                    {
-                        id: "crimeData2011",
-                        src: "app/data/crimeDataCoords_2011.json"
-                    },
-                    {
-                        id: "crimeData2012",
-                        src: "app/data/crimeDataCoords_2012.json"
-                    },
-                    {
-                        id: "crimeData2013",
-                        src: "app/data/crimeDataCoords_2013.json"
-                    },
-                    {
-                        id: "crimeData2014",
-                        src: "app/data/crimeDataCoords_2014.json"
-                    }
-            ],
                 downloadQueue: {},
                 downloadCompleteHandler: function () {
                     "use strict";
@@ -200,7 +162,7 @@
                     //        queue.on("fileload", function () {
                     //            //do we need to do something after something loads?
                     //        });
-                    queue.loadManifest(this.dataURLs);
+                    queue.loadManifest(crimeData.dataURLs);
 
                     return queue;
                 },
