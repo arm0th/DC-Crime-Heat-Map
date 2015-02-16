@@ -1,8 +1,8 @@
-/*global angular */
+/*global angular, createjs */
 (function () {
     "use strict";
 
-    function crimeYearsFactory() {
+    function crimeYearsFactory($q) {
         var startYear = 2006,
             endYear = 2014,
             index = endYear,
@@ -47,7 +47,8 @@
                     id: "crimeData2014",
                     src: "app/data/crimeDataCoords_2014.json"
                 }
-            ];
+            ],
+            queue = null;
 
         //add all years into an array
         while (index >= startYear) {
@@ -55,10 +56,50 @@
             index -= 1;
         }
 
+        function updateCurYear(year) {
+            //$scope.$apply(function () {
+                data.curYear = year;
+            //});
+        }
+
+        function downloadData() {
+            var defer = $q.defer();
+
+            if (queue === null) {
+                queue = new createjs.LoadQueue();
+
+                queue.on("complete", function () {
+                    defer.resolve("Finished loading!");
+                });
+                queue.on("progress", function (e) {
+                    defer.notify(e.progress);
+                });
+                queue.on("error", function (err) {
+                    defer.reject("Failed to load crime data: " + err.message);
+                });
+
+                queue.loadManifest(dataURLs);
+            }
+
+            return defer.promise;
+        }
+
+        function getCrimeData(year) {
+            var defer = $q.defer(),
+                data = queue.getResult("crimeData" + year);
+
+            defer.resolve(data);
+
+            return defer.promise;
+        }
+
         // Public API here
         return {
             yearsData: data,
-            dataURLs: dataURLs
+            dataURLs: dataURLs,
+            downloadData: downloadData,
+            getData: getCrimeData,
+            updateCurYear: updateCurYear
         };
     }
 

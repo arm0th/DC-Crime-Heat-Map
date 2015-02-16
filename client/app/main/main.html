@@ -22,7 +22,7 @@
                     <a href="#" class="dropdown-toggle" role="button" aria-expanded="false" dropdown-toggle><span class="caret">  </span><em>Current year</em>:  <b>{{nav.yearsData.curYear}}</b></a>
                     <ul class="dropdown-menu" role="menu">
                         <li ng-repeat="year in nav.yearsData.years">
-                            <a href="#" ng-click="nav.yearsData.curYear = year">{{year}}</a>
+                            <a href="#" ng-click="nav.updateCurYear(year)">{{year}}</a>
                         </li>
                     </ul>
                 </li>

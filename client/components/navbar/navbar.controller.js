@@ -21,6 +21,12 @@
         self.toggled = function (data) {
             alert("data:" + data);
         };
+
+        self.updateCurYear = function (year) {
+            //$scope.$apply(function () {
+                crimeData.updateCurYear(year);
+            //});
+        };
     }
 
     angular.module('dcCrimeHeatmapApp')

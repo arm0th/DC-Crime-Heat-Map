@@ -1,5 +1,6 @@
-'use strict';
+/*global angular,$, L */
 (function () {
+    'use strict';
     var app = angular.module('dcCrimeHeatmapApp');
     app.controller('MainCtrl', function ($scope, $http, socket, crimeData) {
         var App = window.App || {},
@@ -18,14 +19,14 @@
                     startCoords: [38.9, -77.02]
                 },
                 initialize: function () {
-                    "use strict";
 
                     var self = this;
 
                     //download all heatmap data
-                    this.downloadQueue = this.downloadData();
+                    //this.downloadQueue = this.downloadData();
+                    this.downloadData();
 
-                    //this.map = this.initMap();
+                    this.map = this.initMap();
 
                     $("#yearDropItems").click(function (e) {
                         self.curYear = e.target.innerText;
@@ -144,27 +145,47 @@
                     //this.loadClusterData(data, this.clusterLayer);
                 },
                 downloadData: function () {
-                    "use strict";
-
-                    var queue = new createjs.LoadQueue(),
+                    var that = this,
                         progBar = $("#progressBar"),
-                        progBarMeter = progBar.find("span");
+                        progBarMeter = progBar.find("span"),
+                        getCurData = function (m) {
+                            $("#progressContainer").css("display", "none");
+                            console.log(m);
+                            return crimeData.getData(crimeData.yearsData.curYear);
+                        },
+                        populateData = function (data) {
+                            that.loadHeatMapLayer(that.map, data);
+                            that.calcTotals(data);
+                            return data;
+                        };
 
-                    queue.on("complete", this.downloadCompleteHandler, this);
-                    queue.on("progress", function (e) {
-                        //TODO: refactor this, we shouldn't hardcode things
-                        var newWidth = 200 * e.progress;
-                        progBarMeter.css("width", newWidth + "px");
-                    });
-                    queue.on("error", function (err) {
-                        alert("Failed to load crime data: " + err.message);
-                    });
-                    //        queue.on("fileload", function () {
-                    //            //do we need to do something after something loads?
-                    //        });
-                    queue.loadManifest(crimeData.dataURLs);
+                    crimeData.downloadData()
+                        .then(getCurData)
+                        .then(populateData)
+                        .then(function (data) {
+                                console.log("IT WORKED");
+                                that.loadClusterData(data, that.clusterLayer);
+                            },
+                            function (err) {
+                                console.log("FAIL :(")
+                            },
+                            function (progress) {
+                                console.log(progress);
+                            });
+                },
+                updateYear: function (year) {
+                    var self = this;
+                    self.curYear = year;
 
-                    return queue;
+                    crimeData.getData(year).then(function (data) {
+                        self.loadHeatMapLayer(self.map, data);
+
+                        self.loadClusterData(data, self.clusterLayer);
+
+                        self.calcTotals(data);
+                        data = null;
+                    });
+
                 },
                 loadClusterData: function (data, clusterGroup, legendState) {
                     "use strict";
@@ -369,6 +390,11 @@
 
             };
 
+        $scope.$watch(function () {return crimeData.yearsData.curYear;},
+            function (oldVal, newVal, s) {
+            console.log("ya?" + newVal);
+            App.updateYear(newVal);
+        });
         //define backbone objects
         App.CrimeTotalsModel = Backbone.Model.extend({
             id: "",
