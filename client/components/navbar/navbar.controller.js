@@ -3,20 +3,22 @@
     "use strict";
 
     function NavBarController($scope, $location, crimeData) {
-        $scope.menu = [{
+        var self = this;
+
+        self.menu = [{
             'title': 'Home',
             'link': '/'
         }];
 
-        $scope.yearsData = crimeData.yearsData;
+        self.yearsData = crimeData.yearsData;
 
-        $scope.isCollapsed = true;
+        self.isCollapsed = true;
 
-        $scope.isActive = function (route) {
+        self.isActive = function (route) {
             return route === $location.path();
         };
 
-        $scope.toggled = function (data) {
+        self.toggled = function (data) {
             alert("data:" + data);
         };
     }
