@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dcCrimeHeatmapApp')
+angular.module('dcCrimeHeatmapApp.modalComponent', [])
   .factory('Modal', function ($rootScope, $modal) {
     /**
      * Opens a modal

@@ -29,7 +29,9 @@
         };
     }
 
-    angular.module('dcCrimeHeatmapApp')
+    angular.module('dcCrimeHeatmapApp.navBarComponent', [
+        'dcCrimeHeatmapApp.crimeDataFactory'
+    ])
         .controller('NavbarCtrl', NavBarController);
 
 }());

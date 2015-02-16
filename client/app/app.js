@@ -8,7 +8,11 @@ var app = angular.module('dcCrimeHeatmapApp', [
   'ngSanitize',
   'btford.socket-io',
   'ui.router',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'dcCrimeHeatmapApp.mainModule',
+  'dcCrimeHeatmapApp.crimeDataFactory',
+  'dcCrimeHeatmapApp.navBarComponent',
+  'dcCrimeHeatmapApp.socketComponent'
 ]);
 app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider

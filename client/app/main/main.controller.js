@@ -2,7 +2,7 @@
 /*global angular,$, L, Backbone, console, alert, Handlebars, Worker, insertCommas, _ */
 (function () {
     'use strict';
-    var app = angular.module('dcCrimeHeatmapApp');
+    var app = angular.module('dcCrimeHeatmapApp.mainController', []);
     app.controller('MainCtrl', function ($scope, $http, socket, crimeData) {
         var App = window.App || {},
             MainApp = {
