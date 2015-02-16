@@ -1,15 +1,27 @@
-'use strict';
+/*global angular */
+(function () {
+    "use strict";
 
-angular.module('dcCrimeHeatmapApp')
-  .controller('NavbarCtrl', function ($scope, $location) {
-    $scope.menu = [{
-      'title': 'Home',
-      'link': '/'
-    }];
+    function NavBarController($scope, $location, crimeYears) {
+        $scope.menu = [{
+            'title': 'Home',
+            'link': '/'
+        }];
 
-    $scope.isCollapsed = true;
+        $scope.yearsData = crimeYears.yearsData;
 
-    $scope.isActive = function(route) {
-      return route === $location.path();
-    };
-  });
+        $scope.isCollapsed = true;
+
+        $scope.isActive = function (route) {
+            return route === $location.path();
+        };
+
+        $scope.toggled = function (data) {
+            alert("data:" + data);
+        };
+    }
+
+    angular.module('dcCrimeHeatmapApp')
+        .controller('NavbarCtrl', NavBarController);
+
+}());
