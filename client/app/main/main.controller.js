@@ -1,4 +1,5 @@
-/*global angular,$, L */
+/*jslint nomen: true */
+/*global angular,$, L, Backbone, console, alert, Handlebars, Worker, insertCommas, _ */
 (function () {
     'use strict';
     var app = angular.module('dcCrimeHeatmapApp');
@@ -19,31 +20,12 @@
                     startCoords: [38.9, -77.02]
                 },
                 initialize: function () {
-
                     var self = this;
 
                     //download all heatmap data
-                    //this.downloadQueue = this.downloadData();
                     this.downloadData();
 
                     this.map = this.initMap();
-
-                    $("#yearDropItems").click(function (e) {
-                        self.curYear = e.target.innerText;
-
-                        var data = self.downloadQueue.getResult("crimeData" + self.curYear);
-                        self.loadHeatMapLayer(self.map, data);
-
-                        self.loadClusterData(data, self.clusterLayer);
-
-                        self.calcTotals(data);
-                        data = null;
-
-                        //NOTE: this refers to the dropdown
-                        $("#yearDropBtn").text(self.curYear);
-                        $(this).removeClass("open"); //should hide the dropdown but does not
-                        this.style.left = "-999999px"; // TODO: find a better way!
-                    });
 
                     $("#layerButtons a").click(function (e) {
                         var btnEl = $(this),
@@ -56,8 +38,6 @@
                     //this.registerHandlebarsHelpers();
                 },
                 initMap: function () {
-                    "use strict";
-
                     //set up map
                     var parent = this,
                         map = L.mapbox.map('map', 'uknowho.map-wc8j7l0g', {
@@ -98,8 +78,6 @@
                     return map;
                 },
                 registerHandlebarsHelpers: function () {
-                    "use strict";
-
                     var parent = this;
 
                     Handlebars.registerHelper('listCrime', function (items, options) {
@@ -109,7 +87,7 @@
                             curImgTag,
                             html = "<ul>\n";
 
-                        for (idx = 0; idx < items.length; idx++) {
+                        for (idx = 0; idx < items.length; idx += 1) {
                             curData = items[idx];
                             curImgTag = '<img class="mapLegendIcon" src="' +
                                 parent.IconFactory.getIconPath(curData.offense) +
@@ -126,23 +104,9 @@
                     });
                 },
                 loadHeatMapLayer: function (m, crimeData) {
-                    "use strict";
-
                     if (this.curHeatLayer) {
                         this.curHeatLayer.setLatLngs(crimeData);
                     }
-                },
-                downloadQueue: {},
-                downloadCompleteHandler: function () {
-                    "use strict";
-
-                    var data = this.downloadQueue.getResult("crimeData" + this.curYear);
-                    this.loadHeatMapLayer(this.map, data);
-                    $("#progressContainer").css("display", "none");
-
-                    this.calcTotals(data);
-
-                    //this.loadClusterData(data, this.clusterLayer);
                 },
                 downloadData: function () {
                     var that = this,
@@ -163,11 +127,11 @@
                         .then(getCurData)
                         .then(populateData)
                         .then(function (data) {
-                                console.log("IT WORKED");
-                                that.loadClusterData(data, that.clusterLayer);
-                            },
+                            console.log("IT WORKED");
+                            that.loadClusterData(data, that.clusterLayer);
+                        },
                             function (err) {
-                                console.log("FAIL :(")
+                                console.log("FAIL :(");
                             },
                             function (progress) {
                                 console.log(progress);
@@ -188,8 +152,6 @@
 
                 },
                 loadClusterData: function (data, clusterGroup, legendState) {
-                    "use strict";
-
                     var parent = this;
 
                     //remove all points before proceeding
@@ -215,7 +177,7 @@
                                 curMarkers = [],
                                 options = {};
                             if (obj.status === "loading") {
-                                for (idx = 0; idx < obj.data.length; idx++) {
+                                for (idx = 0; idx < obj.data.length; idx += 1) {
                                     curCoord = obj.data[idx];
                                     options = {
                                         icon: parent.IconFactory.genIcon(curCoord[2])
@@ -242,8 +204,6 @@
                     }
                 },
                 calcTotals: function (data) {
-                    "use strict";
-
                     var parent = this,
                         legendModel = new this.MapLegendModel({
                             crimeTotals: new parent.CrimeTotalsCollection()
@@ -336,8 +296,6 @@
 
                     },
                     getIconKey: function (offenseType) {
-                        "use strict";
-
                         var iconKey;
 
                         if (offenseType.match(/HOMICIDE/i)) {
@@ -357,16 +315,12 @@
                         return iconKey;
                     },
                     getIconPath: function (offenseType) {
-                        "use strict";
-
                         var iconKey = this.getIconKey(offenseType);
 
                         //return relative URL path based off of iconKey
                         return this.iconURLs[iconKey];
                     },
                     genIcon: function (offenseType) {
-                        "use strict";
-
                         var iconKey = this.getIconKey(offenseType);
 
                         //instanciate icon and return it
@@ -374,8 +328,6 @@
                     }
                 },
                 showMessage: function (msg) {
-                    "use strict";
-
                     //populate data with text
                     $("#messageModal p").html("<h5>" + msg + "</h5>");
 
@@ -390,17 +342,16 @@
 
             };
 
-        $scope.$watch(function () {return crimeData.yearsData.curYear;},
+        $scope.$watch(function () {return crimeData.yearsData.curYear; },
             function (oldVal, newVal, s) {
-            console.log("ya?" + newVal);
-            App.updateYear(newVal);
-        });
+                console.log("ya?" + newVal);
+                App.updateYear(newVal);
+            });
         //define backbone objects
         App.CrimeTotalsModel = Backbone.Model.extend({
             id: "",
             offense: "",
             offenseFormatted: "",
-            isSelected: true,
             total: 0,
             totalFormatted: ""
         });
@@ -415,8 +366,6 @@
 
         //on document ready
         $(function () {
-            "use strict";
-
             //initialize foundation
             //$(document).foundation();
 
