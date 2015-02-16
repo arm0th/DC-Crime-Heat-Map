@@ -24,5 +24,5 @@
     }
 
     angular.module('dcCrimeHeatmapApp')
-        .factory('crimeYears', crimeYearsFactory);
+        .factory('crimeData', crimeYearsFactory);
 }());

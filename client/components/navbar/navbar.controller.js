@@ -2,13 +2,13 @@
 (function () {
     "use strict";
 
-    function NavBarController($scope, $location, crimeYears) {
+    function NavBarController($scope, $location, crimeData) {
         $scope.menu = [{
             'title': 'Home',
             'link': '/'
         }];
 
-        $scope.yearsData = crimeYears.yearsData;
+        $scope.yearsData = crimeData.yearsData;
 
         $scope.isCollapsed = true;
 
