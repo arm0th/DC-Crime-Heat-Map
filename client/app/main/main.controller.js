@@ -3,7 +3,8 @@
 (function () {
     'use strict';
     var app = angular.module('dcCrimeHeatmapApp.mainController', [
-        'dcCrimeHeatmapApp.modalComponent'
+        'dcCrimeHeatmapApp.modalComponent',
+        'dcCrimeHeatmapApp.mainMap'
     ]);
     app.controller('MainCtrl', function ($scope, $http, $timeout, socket, crimeData, Modal) {
         var main = this,
@@ -11,7 +12,7 @@
             MainApp = {
                 map: null,
                 curHeatLayer: null,
-                clusterLayer: {}, // object to store point layer groups
+                clusterLayer: null, // object to store point layer groups
                 worker: null,
                 totalsWorker: null,
                 legendView: null,
@@ -24,7 +25,7 @@
                 initialize: function () {
                     var self = this;
 
-                    this.map = this.initMap();
+                    //this.map = this.initMap();
                     //download all heatmap data
                     this.downloadData();
 
@@ -117,7 +118,10 @@
                             return crimeData.getData(crimeData.yearsData.curYear);
                         },
                         populateData = function (data) {
-                            that.loadHeatMapLayer(that.map, data);
+                            if (that.map) {
+                                that.loadHeatMapLayer(that.map, data);
+                            }
+
                             that.calcTotals(data);
                             return data;
                         };
@@ -131,12 +135,17 @@
                                 $("#progressContainer").css("display", "none");
                             }, 500);
 
+                            $scope.status.curCrimeData = data;
+
                             $scope.$watch(function () {return crimeData.yearsData.curYear; },
                                 function (oldVal, newVal, s) {
                                     console.log("year updated:" + newVal);
                                     App.updateYear(newVal);
                                 });
-                            that.loadClusterData(data, that.clusterLayer);
+
+                            if (that.clusterLayer) {
+                                that.loadClusterData(data, that.clusterLayer);
+                            }
                         },
                             function (err) {
                                 console.log("FAIL :(");
@@ -149,10 +158,15 @@
                     var self = this;
 
                     crimeData.getData(year).then(function (data) {
-                        self.loadHeatMapLayer(self.map, data);
+//                        if (self.map) {
+//                            self.loadHeatMapLayer(self.map, data);
+//                        }
+//
+//                        if (self.clusterLayer) {
+//                            self.loadClusterData(data, self.clusterLayer);
+//                        }
 
-                        self.loadClusterData(data, self.clusterLayer);
-
+                        $scope.status.curCrimeData = data;
                         self.calcTotals(data);
                         data = null;
                     });
@@ -336,8 +350,8 @@
                 },
                 showMessage: function (msg) {
                     //show modal
-                    var modal = Modal.info();
-                    var modalInstance = modal('Data complete', msg);
+                    var modal = Modal.info(),
+                        modalInstance = modal('Data complete', msg);
 
                     //hide the modal it after a few seconds
                     setTimeout(function () {
@@ -348,7 +362,8 @@
             };
 
         $scope.status = {
-            progress: 0
+            progress: 0,
+            curCrimeData: []
         };
 
 
