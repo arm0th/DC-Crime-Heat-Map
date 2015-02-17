@@ -3,8 +3,9 @@
 (function () {
     'use strict';
     var app = angular.module('dcCrimeHeatmapApp.mainController', []);
-    app.controller('MainCtrl', function ($scope, $http, socket, crimeData) {
-        var App = window.App || {},
+    app.controller('MainCtrl', function ($scope, $http, $timeout, socket, crimeData) {
+        var main = this,
+            App = window.App || {},
             MainApp = {
                 map: null,
                 curHeatLayer: null,
@@ -12,7 +13,6 @@
                 worker: null,
                 totalsWorker: null,
                 legendView: null,
-                curYear: "2014", //TODO: do not hardcode this
                 config: {
                     minZoom: 11,
                     startZoom: 12,
@@ -22,10 +22,10 @@
                 initialize: function () {
                     var self = this;
 
+                    this.map = this.initMap();
                     //download all heatmap data
                     this.downloadData();
 
-                    this.map = this.initMap();
 
                     $("#layerButtons a").click(function (e) {
                         var btnEl = $(this),
@@ -110,10 +110,7 @@
                 },
                 downloadData: function () {
                     var that = this,
-                        progBar = $("#progressBar"),
-                        progBarMeter = progBar.find("span"),
                         getCurData = function (m) {
-                            $("#progressContainer").css("display", "none");
                             console.log(m);
                             return crimeData.getData(crimeData.yearsData.curYear);
                         },
@@ -127,19 +124,27 @@
                         .then(getCurData)
                         .then(populateData)
                         .then(function (data) {
-                            console.log("IT WORKED");
+                            console.log("All data loaded!");
+                            $timeout(function () {
+                                $("#progressContainer").css("display", "none");
+                            }, 500);
+
+                            $scope.$watch(function () {return crimeData.yearsData.curYear; },
+                                function (oldVal, newVal, s) {
+                                    console.log("year updated:" + newVal);
+                                    App.updateYear(newVal);
+                                });
                             that.loadClusterData(data, that.clusterLayer);
                         },
                             function (err) {
                                 console.log("FAIL :(");
                             },
-                            function (progress) {
-                                console.log(progress);
+                            function (prog) {
+                                $scope.status.progress = Math.round(prog * 100);
                             });
                 },
                 updateYear: function (year) {
                     var self = this;
-                    self.curYear = year;
 
                     crimeData.getData(year).then(function (data) {
                         self.loadHeatMapLayer(self.map, data);
@@ -342,11 +347,11 @@
 
             };
 
-        $scope.$watch(function () {return crimeData.yearsData.curYear; },
-            function (oldVal, newVal, s) {
-                console.log("ya?" + newVal);
-                App.updateYear(newVal);
-            });
+        $scope.status = {
+            progress: 0
+        };
+
+
         //define backbone objects
         App.CrimeTotalsModel = Backbone.Model.extend({
             id: "",
