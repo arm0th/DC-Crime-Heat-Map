@@ -7,7 +7,7 @@
         'dcCrimeHeatmapApp.mainMap.icons',
         'dcCrimeHeatmapApp.crimeDataFactory'
     ])
-        .directive('mainMap', function (IconFactory, crimeData) {
+        .directive('mainMap', function (IconFactory, crimeData, $q) {
             var config = {
                     minZoom: 11,
                     startZoom: 12,
@@ -66,6 +66,7 @@
             }
 
             function loadClusterData(data, clusterGroup, legendState) {
+                var defer = $q.defer();
                 //remove all points before proceeding
                 clusterGroup.clearLayers();
 
@@ -101,7 +102,7 @@
                         } else if (obj.status === "complete") {
                             //show message
                             //parent.showMessage("Loaded Crime data points");
-                            console.log("Finished loading data points");
+                            defer.resolve("Finished loading data points");
                         }
                     };
 
@@ -111,8 +112,10 @@
                         filter: legendState
                     });
                 } else {
-                    alert("Web workers aren't supported on your browser. No plotting for you!");
+                    defer.reject("Web workers aren't supported on your browser. No plotting for you!");
                 }
+
+                return defer.promise;
             }
 
             function updateYear(year, cData) {
@@ -144,7 +147,14 @@
                         if (newVal) {
                             if (map) {
                                 loadHeatMapLayer(map, curHeatLayer, newVal);
-                                loadClusterData(newVal, clusterLayer, undefined);
+                                loadClusterData(newVal, clusterLayer, undefined).then(
+                                    function (msg) {
+                                        console.log("Success:" + msg);
+                                    },
+                                    function (err) {
+                                        console.error("Failure:" + err);
+                                    }
+                                );
                             }
                         }
                     });
