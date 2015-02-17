@@ -81,7 +81,7 @@
                             $scope.status.curCrimeData = data;
 
                             $scope.$watch(function () {return crimeData.yearsData.curYear; },
-                                function (oldVal, newVal, s) {
+                                function (newVal, oldVal , s) {
                                     console.log("year updated:" + newVal);
                                     App.updateYear(newVal);
                                 });
