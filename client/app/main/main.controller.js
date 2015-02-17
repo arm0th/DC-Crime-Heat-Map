@@ -4,7 +4,8 @@
     'use strict';
     var app = angular.module('dcCrimeHeatmapApp.mainController', [
         'dcCrimeHeatmapApp.modalComponent',
-        'dcCrimeHeatmapApp.mainMap'
+        'dcCrimeHeatmapApp.mainMap',
+        'dcCrimeHeatmapApp.legend'
     ]);
     app.controller('MainCtrl', function ($scope, $http, $timeout, socket, crimeData, Modal) {
         var main = this,
@@ -81,7 +82,7 @@
                             $scope.status.curCrimeData = data;
 
                             $scope.$watch(function () {return crimeData.yearsData.curYear; },
-                                function (newVal, oldVal , s) {
+                                function (newVal, oldVal, s) {
                                     console.log("year updated:" + newVal);
                                     App.updateYear(newVal);
                                 });
@@ -135,6 +136,16 @@
                                 template,
                                 htmlStr;
 
+                            //update crime totals
+                            $scope.status.curCrimeTotals = e.data;
+                            $scope.status.crimeLegend = e.data.map(function (item) {
+                                return {
+                                    label: item.offense,
+                                    isVisible: item.isVisible
+                                }
+                            });
+                            console.dir($scope.status.crimeLegend)
+
                             //parent.legendView.model.set({crimeTotals: totals });
                         };
 
@@ -159,9 +170,9 @@
 
         $scope.status = {
             progress: 0,
-            curCrimeData: []
+            curCrimeData: [],
+            curCrimeTotals: []
         };
-
 
         //define backbone objects
         App.CrimeTotalsModel = Backbone.Model.extend({

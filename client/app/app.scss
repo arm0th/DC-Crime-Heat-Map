@@ -123,6 +123,10 @@ body { margin: 0; padding: 0 ; height: 100%; font-family: 'open_sansregular', sa
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 2px 15px;
+
+    p {
+        font-size: 0.7em;
+    }
 }
 
 #crimeTotals ul {
@@ -200,6 +204,7 @@ body { margin: 0; padding: 0 ; height: 100%; font-family: 'open_sansregular', sa
 
 // Component styles are injected through grunt
 // injector
+@import 'legend/legend.scss';
 @import 'main/main.scss';
 @import 'mainMap/mainMap.scss';
 @import 'modal/modal.scss';
