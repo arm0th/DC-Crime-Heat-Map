@@ -16,19 +16,11 @@
                 worker: null,
                 totalsWorker: null,
                 legendView: null,
-                config: {
-                    minZoom: 11,
-                    startZoom: 12,
-                    maxZoom: 19,
-                    startCoords: [38.9, -77.02]
-                },
                 initialize: function () {
                     var self = this;
 
-                    //this.map = this.initMap();
-                    //download all heatmap data
+                    //download all crime data
                     this.downloadData();
-
 
                     $("#layerButtons a").click(function (e) {
                         var btnEl = $(this),
@@ -39,46 +31,6 @@
                     });
 
                     //this.registerHandlebarsHelpers();
-                },
-                initMap: function () {
-                    //set up map
-                    var parent = this,
-                        map = L.mapbox.map('map', 'uknowho.map-wc8j7l0g', {
-                            minZoom: parent.config.minZoom,
-                            maxZoom: parent.config.maxZoom
-                        }).setView(parent.config.startCoords, parent.config.startZoom);
-
-                    //add heat layer with empty set for now
-                    this.curHeatLayer = L.heatLayer([], {
-                        maxZoom: parent.config.maxZoom,
-                        max: 0.7,
-                        radius: 30
-                    });
-                    this.curHeatLayer.addTo(map);
-
-                    //create cluster layer where all the points are held
-                    this.clusterLayer = L.markerClusterGroup({
-                        iconCreateFunction: function (cluster) {
-                            var childCount = cluster.getChildCount(),
-                                c = ' marker-cluster-';
-                            if (childCount < 10) {
-                                c += 'small';
-                            } else if (childCount < 100) {
-                                c += 'medium';
-                            } else {
-                                c += 'large';
-                            }
-
-                            return new L.DivIcon({
-                                html: '<div><span>' + insertCommas(childCount) + '</span></div>',
-                                className: 'marker-cluster' + c,
-                                iconSize: new L.Point(40, 40)
-                            });
-                        }
-                    });
-                    this.clusterLayer.addTo(map);
-
-                    return map;
                 },
                 registerHandlebarsHelpers: function () {
                     var parent = this;
@@ -106,11 +58,6 @@
                         return html + "</ul>";
                     });
                 },
-                loadHeatMapLayer: function (m, crimeData) {
-                    if (this.curHeatLayer) {
-                        this.curHeatLayer.setLatLngs(crimeData);
-                    }
-                },
                 downloadData: function () {
                     var that = this,
                         getCurData = function (m) {
@@ -118,10 +65,6 @@
                             return crimeData.getData(crimeData.yearsData.curYear);
                         },
                         populateData = function (data) {
-                            if (that.map) {
-                                that.loadHeatMapLayer(that.map, data);
-                            }
-
                             that.calcTotals(data);
                             return data;
                         };
@@ -143,9 +86,6 @@
                                     App.updateYear(newVal);
                                 });
 
-                            if (that.clusterLayer) {
-                                that.loadClusterData(data, that.clusterLayer);
-                            }
                         },
                             function (err) {
                                 console.log("FAIL :(");
@@ -158,71 +98,11 @@
                     var self = this;
 
                     crimeData.getData(year).then(function (data) {
-//                        if (self.map) {
-//                            self.loadHeatMapLayer(self.map, data);
-//                        }
-//
-//                        if (self.clusterLayer) {
-//                            self.loadClusterData(data, self.clusterLayer);
-//                        }
-
                         $scope.status.curCrimeData = data;
                         self.calcTotals(data);
                         data = null;
                     });
 
-                },
-                loadClusterData: function (data, clusterGroup, legendState) {
-                    var parent = this;
-
-                    //remove all points before proceeding
-                    clusterGroup.clearLayers();
-
-                    //TODO: handle this better for unsupported browsers
-                    //check if browser supports web workers
-                    if (typeof (Worker) !== "undefined") {
-                        //if a worker is running, stop it
-                        if (this.worker !== null) {
-                            this.worker.terminate();
-                        }
-
-                        this.worker = new Worker("app/workers/genClusterLayer.js");
-
-                        this.worker.onmessage = function (e) {
-                            var obj = e.data,
-                                idx,
-                                curCoord,
-
-
-                                marker,
-                                curMarkers = [],
-                                options = {};
-                            if (obj.status === "loading") {
-                                for (idx = 0; idx < obj.data.length; idx += 1) {
-                                    curCoord = obj.data[idx];
-                                    options = {
-                                        icon: parent.IconFactory.genIcon(curCoord[2])
-                                    };
-
-                                    marker = L.marker([curCoord[0], curCoord[1]], options);
-                                    marker.bindPopup(curCoord[2]);
-                                    curMarkers.push(marker);
-                                }
-                                clusterGroup.addLayers(curMarkers);
-                            } else if (obj.status === "complete") {
-                                //show message
-                                parent.showMessage("Loaded Crime data points");
-                            }
-                        };
-
-                        //pass in the Leaflet object to the worker
-                        this.worker.postMessage({
-                            data: data,
-                            filter: legendState
-                        });
-                    } else {
-                        alert("Web workers aren't supported on your browser. No plotting for you!");
-                    }
                 },
                 calcTotals: function (data) {
                     var parent = this,
@@ -262,90 +142,6 @@
                         this.totalsWorker.postMessage(data);
                     } else {
                         alert("Web workers aren't supported on your browser. No plotting for you!");
-                    }
-                },
-                IconFactory: {
-                    iconURLs: {
-                        RedIcon: '../assets/images/marker-icon-red.png',
-                        TheftIcon: '../assets/images/theft.png',
-                        HomicideIcon: '../assets/images/homicide.png',
-                        CarIcon: '../assets/images/car.png',
-                        RobberyIcon: '../assets/images/robbery.png',
-                        SexAssultIcon: '../assets/images/sex_assult.png'
-                    },
-                    icons: {
-                        RedIcon: L.Icon.Default.extend({
-                            options: {
-                                iconUrl: '../assets/images/marker-icon-red.png'
-                            }
-                        }),
-                        TheftIcon: L.Icon.Default.extend({
-                            options: {
-                                iconSize: [30, 30],
-                                iconAnchor: [15, 30],
-                                iconUrl: '../assets/images/theft.png'
-                            }
-                        }),
-                        HomicideIcon: L.Icon.Default.extend({
-                            options: {
-                                iconSize: [30, 30],
-                                iconAnchor: [15, 30],
-                                iconUrl: '../assets/images/homicide.png'
-                            }
-                        }),
-                        CarIcon: L.Icon.Default.extend({
-                            options: {
-                                iconSize: [30, 30],
-                                iconAnchor: [15, 30],
-                                iconUrl: '../assets/images/car.png'
-                            }
-                        }),
-                        RobberyIcon: L.Icon.Default.extend({
-                            options: {
-                                iconSize: [30, 30],
-                                iconAnchor: [15, 30],
-                                iconUrl: '../assets/images/robbery.png'
-                            }
-                        }),
-                        SexAssultIcon: L.Icon.Default.extend({
-                            options: {
-                                iconSize: [30, 30],
-                                iconAnchor: [15, 30],
-                                iconUrl: '../assets/images/sex_assult.png'
-                            }
-                        })
-
-                    },
-                    getIconKey: function (offenseType) {
-                        var iconKey;
-
-                        if (offenseType.match(/HOMICIDE/i)) {
-                            iconKey = "HomicideIcon";
-                        } else if (offenseType.match(/MOTOR VEHICLE/i) || offenseType.match(/STOLEN AUTO/i)) {
-                            iconKey = "CarIcon";
-                        } else if (offenseType.match(/[\w\W]*THEFT[\w\W]*/i)) {
-                            iconKey = "TheftIcon";
-                        } else if (offenseType.match(/ROBBERY/i)) {
-                            iconKey = "RobberyIcon";
-                        } else if (offenseType.match(/SEX[\w\W]*/i)) {
-                            iconKey = "SexAssultIcon";
-                        } else {
-                            iconKey = "RedIcon";
-                        }
-
-                        return iconKey;
-                    },
-                    getIconPath: function (offenseType) {
-                        var iconKey = this.getIconKey(offenseType);
-
-                        //return relative URL path based off of iconKey
-                        return this.iconURLs[iconKey];
-                    },
-                    genIcon: function (offenseType) {
-                        var iconKey = this.getIconKey(offenseType);
-
-                        //instanciate icon and return it
-                        return new this.icons[iconKey]();
                     }
                 },
                 showMessage: function (msg) {
