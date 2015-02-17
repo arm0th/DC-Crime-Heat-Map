@@ -5,9 +5,10 @@
     angular.module('dcCrimeHeatmapApp.mainMap', [
         'dcCrimeHeatMapApp.mainMap.ctrl',
         'dcCrimeHeatmapApp.mainMap.icons',
-        'dcCrimeHeatmapApp.crimeDataFactory'
+        'dcCrimeHeatmapApp.crimeDataFactory',
+        'dcCrimeHeatmapApp.modalComponent'
     ])
-        .directive('mainMap', function (IconFactory, crimeData, $q) {
+        .directive('mainMap', function (IconFactory, crimeData, $q, Modal) {
             var config = {
                     minZoom: 11,
                     startZoom: 12,
@@ -133,6 +134,18 @@
                 });
             }
 
+            function showMessage(msg, title) {
+                //show modal
+                var modal = Modal.info(),
+                    modalTile = title || 'Success',
+                    modalInstance = modal('Data complete', msg);
+
+                //hide the modal it after a few seconds
+                setTimeout(function () {
+                    modalInstance.close();
+                }, 1500);
+            }
+
             return {
                 templateUrl: 'app/mainMap/mainMap.html',
                 restrict: 'EA',
@@ -144,15 +157,16 @@
                     map = initMap(config);
 
                     scope.$watch('status.curCrimeData', function (newVal, oldVal) {
-                        if (newVal) {
+                        if (newVal && newVal.length > 0) {
                             if (map) {
                                 loadHeatMapLayer(map, curHeatLayer, newVal);
                                 loadClusterData(newVal, clusterLayer, undefined).then(
                                     function (msg) {
-                                        console.log("Success:" + msg);
+                                        showMessage(msg);
                                     },
                                     function (err) {
-                                        console.error("Failure:" + err);
+                                        //TODO: popup error version of modal
+                                        showMessage(err);
                                     }
                                 );
                             }
