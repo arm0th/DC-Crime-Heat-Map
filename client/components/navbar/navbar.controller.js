@@ -6,7 +6,7 @@
         var self = this;
 
         self.menu = [{
-            'title': 'Home',
+            'title': 'Map',
             'link': '/'
         }];
 
@@ -23,9 +23,7 @@
         };
 
         self.updateCurYear = function (year) {
-            //$scope.$apply(function () {
-                crimeData.updateCurYear(year);
-            //});
+            crimeData.updateCurYear(year);
         };
     }
 
