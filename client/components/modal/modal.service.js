@@ -25,6 +25,28 @@ angular.module('dcCrimeHeatmapApp.modalComponent', [])
 
         // Public API here
         return {
+            info: function () {
+                return function (title, msg) {
+                    var infoModal;
+
+                    infoModal = openModal({
+                        modal: {
+                            dismissable: true,
+                            title: title,
+                            html: '<p>' + msg + '</p>',
+                            buttons: [{
+                                classes: 'btn-default',
+                                text: 'Close',
+                                click: function (e) {
+                                    infoModal.dismiss(e);
+                                }
+                            }]
+                        }
+                    });
+
+                    return infoModal;
+                };
+            },
 
             /* Confirmation modals */
             confirm: {

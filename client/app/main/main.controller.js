@@ -2,8 +2,10 @@
 /*global angular,$, L, Backbone, console, alert, Handlebars, Worker, insertCommas, _ */
 (function () {
     'use strict';
-    var app = angular.module('dcCrimeHeatmapApp.mainController', []);
-    app.controller('MainCtrl', function ($scope, $http, $timeout, socket, crimeData) {
+    var app = angular.module('dcCrimeHeatmapApp.mainController', [
+        'dcCrimeHeatmapApp.modalComponent'
+    ]);
+    app.controller('MainCtrl', function ($scope, $http, $timeout, socket, crimeData, Modal) {
         var main = this,
             App = window.App || {},
             MainApp = {
@@ -333,15 +335,13 @@
                     }
                 },
                 showMessage: function (msg) {
-                    //populate data with text
-                    $("#messageModal p").html("<h5>" + msg + "</h5>");
-
                     //show modal
-                    $('#messageModal').foundation('reveal', 'open');
+                    var modal = Modal.info();
+                    var modalInstance = modal('Data complete', msg);
 
-                    //hide it after a few seconds
+                    //hide the modal it after a few seconds
                     setTimeout(function () {
-                        $('#messageModal').foundation('reveal', 'close');
+                        modalInstance.close();
                     }, 1500);
                 }
 
