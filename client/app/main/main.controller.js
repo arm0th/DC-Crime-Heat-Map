@@ -1,5 +1,5 @@
 /*jslint nomen: true */
-/*global angular,$, L, Backbone, console, alert, Handlebars, Worker, insertCommas, _ */
+/*global angular,$, L, Backbone, console, alert, Handlebars, Worker, insertCommas, generateKey, _ */
 (function () {
     'use strict';
     var app = angular.module('dcCrimeHeatmapApp.mainController', [
@@ -84,16 +84,16 @@
                             //update crime totals
                             $scope.status.curCrimeTotals = e.data.map(function (item) {
                                 item.iconSrc = IconFactory.getIconPath(item.offense);
+                                item.key = generateKey(item.offense);
                                 return item;
                             });
 
-                            $scope.status.crimeLegend = e.data.map(function (item) {
-                                return {
-                                    label: item.offense,
-                                    isVisible: item.isVisible
-                                };
-                            });
-                            console.dir($scope.status.crimeLegend)
+                            $scope.legendState = e.data.reduce(function (prev, cur) {
+                                //add key value pairs to an object
+                                prev[cur.key] = true;
+                                return prev;
+                            }, {});
+
 
                         };
 
@@ -123,9 +123,7 @@
             crimeLegend: []
         };
 
-        $scope.legendState = {
-            button: true
-        };
+        $scope.legendState = {};
 
         //on document ready
         $(function () {
