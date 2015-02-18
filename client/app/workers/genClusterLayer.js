@@ -1,4 +1,5 @@
-/*global onmessage, self, setTimeout, clearTimeout, postMessage */
+/*global onmessage, self, setTimeout, clearTimeout, postMessage, generateKey, importScripts */
+importScripts("../utils.js");
 var curStartIdx = 0,
     chunkOffset = 1500,
     data = [],
@@ -55,22 +56,16 @@ function processChunk() {
 onmessage = function (e) {
     "use strict";
 
-    var filter = e.data.filter,
-        lookupHash = {};
+    var filter = e.data.filter;
 
     //save reference to data
     self.data = e.data.data;
 
     if (filter !== undefined) {
-        //create lookup hash based on filter array
-        filter.forEach(function (curObj) {
-            lookupHash[curObj.offense] = curObj.isSelected;
-        });
-
         self.data = self.data.filter(function (curArr) {
             //if the offense type for the data point is in
             //the list, then include it
-            return (lookupHash[curArr[2]] === true);
+            return (filter[generateKey(curArr[2])] === true);
         });
     }
     self.dataLen = self.data.length;

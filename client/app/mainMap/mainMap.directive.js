@@ -16,6 +16,7 @@
                     startCoords: [38.9, -77.02]
                 },
                 map,
+                curData,
                 worker = null,
                 curHeatLayer,
                 clusterLayer;
@@ -176,7 +177,17 @@
                     scope.$watch('legendState', function (newVal, oldVal) {
                         if (newVal) {
                             console.log("YES!!! binging is cool!");
-                            console.dir(newVal)
+                            console.dir(newVal);
+
+                            loadClusterData(scope.status.curCrimeData, clusterLayer, newVal).then(
+                                function (msg) {
+                                    showMessage(msg);
+                                },
+                                function (err) {
+                                    //TODO: popup error version of modal
+                                    showMessage(err);
+                                }
+                            );
                         }
                     }, true);
                 }
