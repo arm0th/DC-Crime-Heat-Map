@@ -1,4 +1,4 @@
-/*global angular */
+/*global angular, $, TweenMax */
 (function () {
     'use strict';
 
@@ -7,7 +7,8 @@
             return {
                 restrict: 'EA',
                 scope: {
-                    crimeTotals: '=totals'
+                    crimeTotals: '=totals',
+                    legendState: '=state'
                 },
                 templateUrl: 'app/legend/legend.html',
                 link: function (scope, element, attrs) {
@@ -15,10 +16,10 @@
                         var mapLegend = $("#mapLegend"),
                             curPos = mapLegend.css("bottom"),
                             contentHeight = $("#crimeTotals").outerHeight();
-                        console.log(curPos)
-                        console.log("YUP:" + $("#crimeTotals").outerHeight());
+
                         TweenMax.to(mapLegend, 0.5, {
-                            bottom: (curPos === "0px") ? -contentHeight : "0px"});
+                            bottom: (curPos === "0px") ? -contentHeight : "0px"
+                        });
                     });
                 }
             };

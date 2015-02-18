@@ -173,12 +173,12 @@
                         }
                     });
 
-                    scope.$watch('status.crimeLegend', function (newVal, oldVal) {
+                    scope.$watch('legendState', function (newVal, oldVal) {
                         if (newVal) {
                             console.log("YES!!! binging is cool!");
                             console.dir(newVal)
                         }
-                    });
+                    }, true);
                 }
             };
         });

@@ -123,6 +123,10 @@
             crimeLegend: []
         };
 
+        $scope.legendState = {
+            button: true
+        };
+
         //on document ready
         $(function () {
             //extend everything from main app
