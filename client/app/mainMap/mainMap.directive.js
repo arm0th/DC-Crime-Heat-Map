@@ -61,9 +61,19 @@
                 return map;
             }
 
-            function loadHeatMapLayer(m, heatLayer, cData) {
+            function loadHeatMapLayer(m, heatLayer, cData, filter) {
+                var filteredData;
                 if (heatLayer) {
-                    heatLayer.setLatLngs(cData);
+
+                    if (filter !== undefined) {
+                        filteredData = cData.filter(function(curArr) {
+                            return filter[generateKey(curArr[2])];
+                        });
+                        heatLayer.setLatLngs(filteredData);
+                    } else {
+                        heatLayer.setLatLngs(cData);
+                    }
+
                 }
             }
 
@@ -181,6 +191,7 @@
 
                             loadClusterData(scope.status.curCrimeData, clusterLayer, newVal).then(
                                 function (msg) {
+                                    loadHeatMapLayer(map, curHeatLayer, scope.status.curCrimeData, newVal);
                                     showMessage(msg);
                                 },
                                 function (err) {
@@ -189,7 +200,6 @@
                                 }
                             );
 
-                            loadHeatMapLayer(map, curHeatLayer, scope.status.curCrimeData);
                         }
                     }, true);
                 }
