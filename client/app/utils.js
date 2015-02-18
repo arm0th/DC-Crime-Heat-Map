@@ -67,8 +67,24 @@ function insertCommas(num) {
     return chars.join("") + decimalDigits;
 }
 
+function generateKey(str) {
+    "use strict";
+    var keyStr = "";
+
+    if (!str) {
+        return "";
+    }
+
+    keyStr = str.toLowerCase()
+                .replace(/[^a-zA-Z0-9]/g, "");
+
+
+    return keyStr;
+}
+
 // export if running under node
 if (typeof exports !== 'undefined') {
     exports.capitalizeStr = capitalizeStr;
     exports.insertCommas = insertCommas;
+    exports.generateKey = generateKey;
 }

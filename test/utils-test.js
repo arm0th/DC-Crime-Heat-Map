@@ -1,5 +1,5 @@
 /*global require, describe, it */
-var utils = require("html/js/utils.js"),
+var utils = require("client/app/utils.js"),
     should = require('chai').should();
 
 describe("utils", function () {
@@ -97,6 +97,32 @@ describe("utils", function () {
         it("should accept negative decimal four digit numbers", function () {
             var result = utils.insertCommas("-1000.10");
             result.should.equal("-1,000.10");
+        });
+    });
+
+    describe("generateKey", function () {
+        it("should return empty string in null or undefined is passed in", function () {
+            var result = utils.generateKey(null);
+            result.should.equal("");
+        });
+
+        it("should remove all tabs and all spaces", function () {
+            var result = utils.generateKey("hello world    bom    dia");
+            result.should.equal("helloworldbomdia");
+
+            result = utils.generateKey("    hello   world   ");
+            result.should.equal("helloworld");
+        });
+
+        it("should make everything lowercase", function () {
+            var result = utils.generateKey("HelloWorldBOMDIA");
+            result.should.equal("helloworldbomdia");
+
+        });
+
+        it("should remove all non-alpha numeric characters", function () {
+            var result = utils.generateKey("%()Hello/$World_BOMDIA..?");
+            result.should.equal("helloworldbomdia");
         });
     });
 });
