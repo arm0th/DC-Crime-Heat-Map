@@ -5,9 +5,10 @@
     var app = angular.module('dcCrimeHeatmapApp.mainController', [
         'dcCrimeHeatmapApp.modalComponent',
         'dcCrimeHeatmapApp.mainMap',
-        'dcCrimeHeatmapApp.legend'
+        'dcCrimeHeatmapApp.legend',
+        'dcCrimeHeatmapApp.mainMap.icons'
     ]);
-    app.controller('MainCtrl', function ($scope, $http, $timeout, socket, crimeData, Modal) {
+    app.controller('MainCtrl', function ($scope, $http, $timeout, socket, crimeData, Modal, IconFactory) {
         var main = this,
             App = window.App || {},
             MainApp = {
@@ -137,12 +138,16 @@
                                 htmlStr;
 
                             //update crime totals
-                            $scope.status.curCrimeTotals = e.data;
+                            $scope.status.curCrimeTotals = e.data.map(function (item) {
+                                item.iconSrc = IconFactory.getIconPath(item.offense);
+                                return item;
+                            });
+
                             $scope.status.crimeLegend = e.data.map(function (item) {
                                 return {
                                     label: item.offense,
                                     isVisible: item.isVisible
-                                }
+                                };
                             });
                             console.dir($scope.status.crimeLegend)
 
@@ -171,7 +176,8 @@
         $scope.status = {
             progress: 0,
             curCrimeData: [],
-            curCrimeTotals: []
+            curCrimeTotals: [],
+            crimeLegend: []
         };
 
         //define backbone objects
