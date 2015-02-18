@@ -175,8 +175,8 @@
                     });
 
                     scope.$watch('legendState', function (newVal, oldVal) {
-                        if (newVal) {
-                            console.log("YES!!! binging is cool!");
+                        if (newVal && Object.keys(newVal).length > 0) {
+                            console.log("Legend state changed:");
                             console.dir(newVal);
 
                             loadClusterData(scope.status.curCrimeData, clusterLayer, newVal).then(
@@ -188,6 +188,8 @@
                                     showMessage(err);
                                 }
                             );
+
+                            loadHeatMapLayer(map, curHeatLayer, scope.status.curCrimeData);
                         }
                     }, true);
                 }
