@@ -1,0 +1,18 @@
+
+<div id="mapLegend">
+    <button id="legendToggleBtn" type="button" class="btn btn-primary">Map Legend</button>
+    <div id="crimeTotals">
+        <h3>Crime Totals</h3>
+        <div class="container-fluid">
+            <div class="row" ng-repeat="item in crimeTotals">
+                <div class="col-md-1">
+                    <img class="mapLegendIcon" src="{{item.iconSrc}}" alt="{{item.offenseFormatted}} icon">
+                </div>
+                <div class="col-md-7"><p>{{item.offenseFormatted}}</p></div>
+                <div class="col-md-2"><p>{{item.totalFormatted}}</p></div>
+                <div class="col-md-2"><label class="btn btn-default btn-xs" ng-model="legendState[item.key]" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false"><span class="glyphicon glyphicon-ok"></span></label></div>
+            </div>
+
+        </div>
+    </div>
+</div>

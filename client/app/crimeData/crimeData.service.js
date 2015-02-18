@@ -103,6 +103,6 @@
         };
     }
 
-    angular.module('dcCrimeHeatmapApp')
+    angular.module('dcCrimeHeatmapApp.crimeDataFactory', [])
         .factory('crimeData', crimeYearsFactory);
 }());

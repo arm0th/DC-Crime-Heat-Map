@@ -114,7 +114,7 @@ body { margin: 0; padding: 0 ; height: 100%; font-family: 'open_sansregular', sa
     margin: auto;
     height: 50px;
     background-color: #fff;
-    width: 205px;
+    width: 200px;
     z-index: 4;
 }
 
@@ -123,6 +123,10 @@ body { margin: 0; padding: 0 ; height: 100%; font-family: 'open_sansregular', sa
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 2px 15px;
+
+    p {
+        font-size: 0.7em;
+    }
 }
 
 #crimeTotals ul {
@@ -140,7 +144,7 @@ body { margin: 0; padding: 0 ; height: 100%; font-family: 'open_sansregular', sa
     bottom: 0px;
     left: 5px;
     margin: 0px;
-    z-index: 100; /* the leaflet zoomcontrol is set to 7 and the foundation fixed class is set to 99 */
+    z-index: 1000; /* the leaflet zoomcontrol is set to 7 and the foundation fixed class is set to 99 */
 }
 
 #mapLegend li {
@@ -200,6 +204,8 @@ body { margin: 0; padding: 0 ; height: 100%; font-family: 'open_sansregular', sa
 
 // Component styles are injected through grunt
 // injector
+@import 'legend/legend.scss';
 @import 'main/main.scss';
+@import 'mainMap/mainMap.scss';
 @import 'modal/modal.scss';
 // endinjector

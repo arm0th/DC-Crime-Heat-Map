@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('dcCrimeHeatmapApp')
+angular.module('dcCrimeHeatmapApp.mainModule', [
+    'dcCrimeHeatmapApp.mainController'
+])
   .config(function ($stateProvider) {
     $stateProvider
       .state('main', {
