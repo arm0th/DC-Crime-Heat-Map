@@ -57,3 +57,6 @@ The [Mocha](http://visionmedia.github.io/mocha/) test framework is used for unit
 $ npm test
 ```
 
+## Server side
+
+MongoDB runs when running grunt serve. Currently working on offloading static files to mocha
