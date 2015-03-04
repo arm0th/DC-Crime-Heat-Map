@@ -1,4 +1,4 @@
-/*global angular, insertCommas, L, Worker */
+/*global angular, insertCommas, generateKey, L, Worker */
 (function () {
     'use strict';
 
@@ -66,7 +66,7 @@
                 if (heatLayer) {
 
                     if (filter !== undefined) {
-                        filteredData = cData.filter(function(curArr) {
+                        filteredData = cData.filter(function (curArr) {
                             return filter[generateKey(curArr[2])];
                         });
                         heatLayer.setLatLngs(filteredData);

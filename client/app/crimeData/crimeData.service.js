@@ -58,7 +58,7 @@
 
         function updateCurYear(year) {
             //$scope.$apply(function () {
-                data.curYear = year;
+            data.curYear = year;
             //});
         }
 
