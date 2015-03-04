@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="88" height="44" viewBox="0 0 800 400">
-    <rect width="800" height="400" fill="#fff"/>
     <g id="s" transform="translate(200,60)" fill="#bf0000">
         <g id="c">
             <path id="t" d="M 0,-40 V 0 H 20 z" transform="rotate(18 0,-40)"/>
