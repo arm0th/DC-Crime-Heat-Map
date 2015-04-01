@@ -62,14 +62,26 @@
             //});
         }
 
-        function downloadData() {
-            var defer = $q.defer();
+        function getCrimeData(year) {
+            var defer = $q.defer(),
+                idx,
+                foundId = false,
+                dataId = "crimeData" + year,
+                data;
 
             if (queue === null) {
                 queue = new createjs.LoadQueue();
 
+            }
+
+            //lets try to retrieve the data from the preloader queue
+            data = queue.getResult(dataId);
+
+            if (data) {
+                defer.resolve(data);
+            } else {
                 queue.on("complete", function () {
-                    defer.resolve("Finished loading!");
+                    defer.resolve(queue.getResult(dataId));
                 });
                 queue.on("progress", function (e) {
                     defer.notify(e.progress);
@@ -78,17 +90,20 @@
                     defer.reject("Failed to load crime data: " + err.message);
                 });
 
-                queue.loadManifest(dataURLs);
+                //search manifest for crime id
+                for (idx = 0; idx < dataURLs.length; idx += 1) {
+                    if (dataURLs[idx].id === dataId) {
+                        queue.loadFile(dataURLs[idx]);
+                        foundId = true;
+                        break;
+                    }
+                }
+
+                if (!foundId) {
+                    defer.reject("Invalid file id!");
+                }
             }
 
-            return defer.promise;
-        }
-
-        function getCrimeData(year) {
-            var defer = $q.defer(),
-                data = queue.getResult("crimeData" + year);
-
-            defer.resolve(data);
 
             return defer.promise;
         }
@@ -97,7 +112,6 @@
         return {
             yearsData: data,
             dataURLs: dataURLs,
-            downloadData: downloadData,
             getData: getCrimeData,
             updateCurYear: updateCurYear
         };
