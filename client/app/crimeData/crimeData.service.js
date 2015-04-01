@@ -86,9 +86,46 @@
 
         function getCrimeData(year) {
             var defer = $q.defer(),
-                data = queue.getResult("crimeData" + year);
+                idx,
+                foundId = false,
+                dataId = "crimeData" + year,
+                data;
 
-            defer.resolve(data);
+            if (queue === null) {
+                queue = new createjs.LoadQueue();
+
+            }
+
+            //lets try to retrieve the data from the preloader queue
+            data = queue.getResult(dataId);
+
+            if (data) {
+                defer.resolve(data);
+            } else {
+                queue.on("complete", function () {
+                    defer.resolve(queue.getResult(dataId));
+                });
+                queue.on("progress", function (e) {
+                    defer.notify(e.progress);
+                });
+                queue.on("error", function (err) {
+                    defer.reject("Failed to load crime data: " + err.message);
+                });
+
+                //search manifest for crime id
+                for (idx = 0; idx < dataURLs.length; idx += 1) {
+                    if (dataURLs[idx].id === dataId) {
+                        queue.loadFile(dataURLs[idx]);
+                        foundId = true;
+                        break;
+                    }
+                }
+
+                if (!foundId) {
+                    defer.reject("Invalid file id!");
+                }
+            }
+
 
             return defer.promise;
         }
@@ -97,7 +134,7 @@
         return {
             yearsData: data,
             dataURLs: dataURLs,
-            downloadData: downloadData,
+            //downloadData: downloadData,
             getData: getCrimeData,
             updateCurYear: updateCurYear
         };

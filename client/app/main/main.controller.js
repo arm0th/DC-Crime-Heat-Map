@@ -23,7 +23,7 @@
                 downloadData: function () {
                     var that = this,
                         getCurData = function (m) {
-                            console.log(m);
+                            console.log('MainCtlr::curData - ' + m);
                             return crimeData.getData(crimeData.yearsData.curYear);
                         },
                         populateData = function (data) {
@@ -31,8 +31,7 @@
                             return data;
                         };
 
-                    crimeData.downloadData()
-                        .then(getCurData)
+                    getCurData()
                         .then(populateData)
                         .then(function (data) {
                             console.log("All data loaded!");
@@ -59,10 +58,21 @@
                 updateYear: function (year) {
                     var self = this;
 
+                    $scope.status.progress = 0;
+                    $("#progressContainer").css("display", "block");
                     crimeData.getData(year).then(function (data) {
+                        //hide load bar
+                        $timeout(function () {
+                            $("#progressContainer").css("display", "none");
+                        }, 500);
+
                         $scope.status.curCrimeData = data;
                         self.calcTotals(data);
                         data = null;
+                    }, function (err) {
+                        console.err("Failed somehow!");
+                    }, function (prog) {
+                        $scope.status.progress = Math.round(prog * 100);
                     });
 
                 },
