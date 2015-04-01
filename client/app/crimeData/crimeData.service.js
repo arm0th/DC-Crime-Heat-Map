@@ -62,28 +62,6 @@
             //});
         }
 
-        function downloadData() {
-            var defer = $q.defer();
-
-            if (queue === null) {
-                queue = new createjs.LoadQueue();
-
-                queue.on("complete", function () {
-                    defer.resolve("Finished loading!");
-                });
-                queue.on("progress", function (e) {
-                    defer.notify(e.progress);
-                });
-                queue.on("error", function (err) {
-                    defer.reject("Failed to load crime data: " + err.message);
-                });
-
-                queue.loadManifest(dataURLs);
-            }
-
-            return defer.promise;
-        }
-
         function getCrimeData(year) {
             var defer = $q.defer(),
                 idx,
@@ -134,7 +112,6 @@
         return {
             yearsData: data,
             dataURLs: dataURLs,
-            //downloadData: downloadData,
             getData: getCrimeData,
             updateCurYear: updateCurYear
         };
