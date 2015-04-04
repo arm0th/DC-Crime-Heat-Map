@@ -2,28 +2,36 @@
 
 describe('Controller: MainCtrl', function () {
 
-  // load the controller's module
-  beforeEach(module('dcCrimeHeatmapApp'));
-  beforeEach(module('socketMock'));
-
   var MainCtrl,
       scope,
       $httpBackend;
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function (_$httpBackend_, $controller, $rootScope) {
-    $httpBackend = _$httpBackend_;
-    $httpBackend.expectGET('/api/things')
-      .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
+  // load the controller's module
+  beforeEach(function () {
+      module('dcCrimeHeatmapApp.modalComponent');
+      module('dcCrimeHeatmapApp.mainController');
+      module('socketMock');
 
-    scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
-      $scope: scope
-    });
-  }));
+      // Initialize the controller and a mock scope
+      inject(function (_$httpBackend_, $controller, $rootScope) {
+        $httpBackend = _$httpBackend_;
+
+        scope = $rootScope.$new();
+        MainCtrl = $controller('MainCtrl', {
+          $scope: scope
+        });
+
+        $httpBackend.expectGET('/api/things')
+          .respond(['HTML5 Boilerplate', 'AngularJS', 'Karma', 'Express']);
+
+      });
+
+  });
+
+
 
   it('should attach a list of things to the scope', function () {
-    $httpBackend.flush();
-    expect(scope.awesomeThings.length).toBe(4);
+    //$httpBackend.flush();
+    expect(scope.status.progress).toBe(0);
   });
 });

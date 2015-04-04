@@ -17,19 +17,19 @@ module.exports = function(config) {
       'client/bower_components/angular-resource/angular-resource.js',
       'client/bower_components/angular-cookies/angular-cookies.js',
       'client/bower_components/angular-sanitize/angular-sanitize.js',
-      'client/bower_components/angular-route/angular-route.js',
       'client/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'client/bower_components/createjs-preloadjs/lib/preloadjs-0.6.0.combined.js',
       'client/bower_components/lodash/dist/lodash.compat.js',
       'client/bower_components/angular-socket-io/socket.js',
       'client/bower_components/angular-ui-router/release/angular-ui-router.js',
       'client/bower_components/mapbox.js.compiled/mapbox.js',
       'client/bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js',
       'client/app/vendor/leaflet-heat.js',
-      'client/app/app.js',
-      'client/app/**/*.js',
       'client/components/**/*.js',
+      'client/components/**/*.html',
+      'client/app/app.js',
       'client/app/**/*.html',
-      'client/components/**/*.html'
+      'client/app/**/*.js'
     ],
 
     preprocessors: {

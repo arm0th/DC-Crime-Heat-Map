@@ -1,18 +1,20 @@
 'use strict';
 
-describe('Service: crimeYears', function () {
+describe('Service: crimeData', function () {
 
   // load the service's module
-  beforeEach(module('dcCrimeHeatMapApp'));
+  beforeEach(function () {
+      module('dcCrimeHeatmapApp.crimeDataFactory');
+      inject(function (_crimeData_) {
+        crimeData = _crimeData_;
+      });
+  });
 
   // instantiate service
-  var crimeYears;
-  beforeEach(inject(function (_crimeYears_) {
-    crimeYears = _crimeYears_;
-  }));
+  var crimeData;
 
   it('should do something', function () {
-    expect(!!crimeYears).toBe(true);
+    expect(!!crimeData).toBe(true);
   });
 
 });

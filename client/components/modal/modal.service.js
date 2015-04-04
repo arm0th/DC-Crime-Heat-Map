@@ -1,6 +1,6 @@
 
 /*global angular */
-angular.module('dcCrimeHeatmapApp.modalComponent', [])
+angular.module('dcCrimeHeatmapApp.modalComponent', ['ui.bootstrap'])
     .factory('Modal', function ($rootScope, $modal) {
         'use strict';
         /**

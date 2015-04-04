@@ -3,7 +3,7 @@
 describe('Controller: MainMapCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('dcCrimeHeatMapApp'));
+  beforeEach(module('dcCrimeHeatMapApp.mainMap.ctrl'));
 
   var MainMapCtrl, scope;
 

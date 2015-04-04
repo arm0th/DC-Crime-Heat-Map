@@ -3,14 +3,16 @@
 describe('Directive: mainMap', function () {
 
   // load the directive's module and view
-  beforeEach(module('dcCrimeHeatMapApp'));
-  beforeEach(module('app/mainMap/mainMap.html'));
+  beforeEach(function () {
+      module('app/mainMap/mainMap.html');
+      module('dcCrimeHeatmapApp.mainMap');
+
+      inject(function ($rootScope) {
+        scope = $rootScope.$new();
+      });
+  });
 
   var element, scope;
-
-  beforeEach(inject(function ($rootScope) {
-    scope = $rootScope.$new();
-  }));
 
   it('should make hidden element visible', inject(function ($compile) {
     element = angular.element('<main-map></main-map>');
