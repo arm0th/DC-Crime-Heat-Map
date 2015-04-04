@@ -30,8 +30,14 @@ describe('Controller: MainCtrl', function () {
 
 
 
-  it('should attach a list of things to the scope', function () {
+  it('should define a status object', function () {
     //$httpBackend.flush();
-    expect(scope.status.progress).toBe(0);
+    expect(scope.status).toEqual(jasmine.any(Object));
+    expect(scope.legendState).toEqual(jasmine.any(Object));
   });
+
+  it('should define a legendState object', function () {
+    expect(scope.legendState).toEqual(jasmine.any(Object));
+  });
+
 });
