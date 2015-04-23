@@ -14,6 +14,7 @@ To download and generate the data, the following is needed:
 * curl
 * python
 * [pyproj](https://github.com/jswhit/pyproj/archive/v1.9.4rel.zip) (version 1.9.4) python module
+* [pymongo](http://docs.mongodb.org/ecosystem/drivers/python/) python module
 
 ## Installation
 
@@ -38,6 +39,14 @@ After pyproj is installed, clone this repository and run bower
 
 ```bash
 $ bower install
+```
+
+## Mongo installation
+
+The python script also needs to connect to mongodb using pymongo. Install it on a Mac using easy_install. See the mongodb [docs](http://api.mongodb.org/python/current/installation.html?_ga=1.183557222.1199728032.1418370087) for installation 
+
+```
+sudo easy_install pymongo
 ```
 
 Next run the download script
