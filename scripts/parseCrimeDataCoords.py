@@ -12,6 +12,14 @@ except ImportError:
     sys.stderr.write("Please install the pyproj python module!\n")
     sys.exit(3)
 
+try:
+    from pymongo import MongoClient
+except ImportError:
+    sys.stderr.write("Please install the pymongo python module!\n")
+    sys.exit(3)
+
+
+
 isNAD83 = True
 coordsList = []
 outputFile = ""
@@ -19,11 +27,16 @@ latCol = 8
 lonCol = 7
 offenseCol = -1
 
-if len(sys.argv) != 2:
-    print 'Supply crimedata CSV!'
+if len(sys.argv) != 3:
+    print 'Supply crimedata CSV and the year!'
     sys.exit(2)
 
+client = MongoClient()
+db = client.dc_crime
+incidents = db.incidents
+
 csvFilename = sys.argv[1]
+crimeYear = sys.argv[2]
 
 #set up the source and destination coordinate system
 nad83=pyproj.Proj("+init=esri:102285") # Maryland State Plane for NAD 83
@@ -73,6 +86,13 @@ with open(csvFilename, 'r') as csvFile:
         #for now we are just dumping everything into arrays
         #coordsList.append({ "latitude" : curCoords[1], "longitude": curCoords[0]})
         coordsList.append([ round(curCoords[1], 6), round(curCoords[0], 6), row[offenseCol] ])
+        curIncident = {
+            "offense": row[offenseCol],
+            "year": crimeYear,
+            "lat": round(curCoords[1], 6),
+            "lon": round(curCoords[0], 6)
+        }
+        incidents.insert_one(curIncident)
         curLine = curLine + 1
 
-print json.dumps(coordsList)
+#print json.dumps(coordsList)

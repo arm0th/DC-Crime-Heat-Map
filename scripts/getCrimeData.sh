@@ -44,8 +44,9 @@ function downloadData {
 function processData {
     for csv in ${DATA_PATH}/*.csv; do
         curYear=`echo $csv|sed 's/[^0-9]//g'`;
-        echo -n "Converting CSV to json file for $curYear data ... "
-        $PYTHON $PYTHON_PARSER $csv > "${JS_PATH}/${JS_PREFIX}_${curYear}.json"
+        echo -n "Importing the CSV into mongodb for $curYear data ... "
+        $PYTHON $PYTHON_PARSER $csv ${curYear}
+        #$PYTHON $PYTHON_PARSER $csv > "${JS_PATH}/${JS_PREFIX}_${curYear}.json"
         echo "done"
     done
 }
