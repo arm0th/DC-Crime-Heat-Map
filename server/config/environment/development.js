@@ -5,8 +5,8 @@
 module.exports = {
   // MongoDB connection options
   mongo: {
-    uri: 'mongodb://localhost/dccrimeheatmap-dev'
+    uri: 'mongodb://localhost/dc_crime'
   },
 
-  seedDB: true
+  seedDB: false
 };
