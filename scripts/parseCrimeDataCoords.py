@@ -31,12 +31,18 @@ if len(sys.argv) != 3:
     print 'Supply crimedata CSV and the year!'
     sys.exit(2)
 
+csvFilename = sys.argv[1]
+crimeYear = sys.argv[2]
+
+if not crimeYear.isdigit():
+    print 'Please supply a valid year!'
+    sys.exit(2)
+
+crimeYear = int(crimeYear)
+
 client = MongoClient()
 db = client.dc_crime
 incidents = db.incidents
-
-csvFilename = sys.argv[1]
-crimeYear = sys.argv[2]
 
 #set up the source and destination coordinate system
 nad83=pyproj.Proj("+init=esri:102285") # Maryland State Plane for NAD 83
@@ -52,7 +58,7 @@ with open(csvFilename, 'r') as csvFile:
         if not wasSkipped:
             #check if it is LAT/LON data which seems
             #to be the format for data <= 2010
-            if "LATITUDE" in row: 
+            if "LATITUDE" in row:
                 isNAD83 = False
                 #set the lat and lon columns
                 latCol = row.index("LATITUDE")
