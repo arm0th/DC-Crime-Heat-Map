@@ -32,7 +32,8 @@ exports.show = function (req, res) {
 };
 
 exports.showYear = function (req, res) {
-    Incident.find(req.params.year, 'lat lon offense year', function (err, incidents) {
+    console.log("what gives:" + req.params.year);
+    Incident.find({year: req.params.year}, '-_id lat lon offense year', function (err, incidents) {
         if (err) {
             return handleError(res, err);
         }
