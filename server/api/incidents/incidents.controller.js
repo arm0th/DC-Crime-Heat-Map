@@ -31,3 +31,16 @@ exports.show = function (req, res) {
     });
 };
 
+exports.showYear = function (req, res) {
+    Incident.find(req.params.year, 'lat lon offense year', function (err, incidents) {
+        if (err) {
+            return handleError(res, err);
+        }
+
+        if (!incidents) {
+            return res.send(404);
+        }
+
+        return res.json(incidents);
+    });
+};

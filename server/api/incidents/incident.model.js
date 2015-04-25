@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
 var IncidentSchema = new Schema({
     lat: Number,
     lon: Number,
+    year: Number,
     offense: String
 });
 
