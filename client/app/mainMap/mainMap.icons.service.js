@@ -57,7 +57,11 @@
 
                 },
                 getIconKey: function (offenseType) {
-                    var iconKey;
+                    var iconKey = "RedIcon";
+
+                    if (!offenseType) {
+                        return iconKey;
+                    }
 
                     if (offenseType.match(/HOMICIDE/i)) {
                         iconKey = "HomicideIcon";

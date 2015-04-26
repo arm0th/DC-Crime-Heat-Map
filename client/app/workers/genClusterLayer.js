@@ -62,10 +62,10 @@ onmessage = function (e) {
     self.data = e.data.data;
 
     if (filter !== undefined) {
-        self.data = self.data.filter(function (curArr) {
+        self.data = self.data.filter(function (curObj) {
             //if the offense type for the data point is in
             //the list, then include it
-            return (filter[generateKey(curArr[2])] === true);
+            return (filter[generateKey(curObj.offense)] === true);
         });
     }
     self.dataLen = self.data.length;

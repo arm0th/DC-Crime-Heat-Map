@@ -66,12 +66,16 @@
                 if (heatLayer) {
 
                     if (filter !== undefined) {
-                        filteredData = cData.filter(function (curArr) {
-                            return filter[generateKey(curArr[2])];
+                        filteredData = cData.filter(function (curObj) {
+                            return filter[generateKey(curObj.offense)];
                         });
-                        heatLayer.setLatLngs(filteredData);
+                        heatLayer.setLatLngs(filteredData.map(function (curObj) {
+                            return [curObj.lat, curObj.lon];
+                        }));
                     } else {
-                        heatLayer.setLatLngs(cData);
+                        heatLayer.setLatLngs(cData.map(function (curObj) {
+                            return [curObj.lat, curObj.lon];
+                        }));
                     }
 
                 }
@@ -103,11 +107,11 @@
                             for (idx = 0; idx < obj.data.length; idx += 1) {
                                 curCoord = obj.data[idx];
                                 options = {
-                                    icon: IconFactory.genIcon(curCoord[2])
+                                    icon: IconFactory.genIcon(curCoord.offense)
                                 };
 
-                                marker = L.marker([curCoord[0], curCoord[1]], options);
-                                marker.bindPopup(curCoord[2]);
+                                marker = L.marker([curCoord.lat, curCoord.lon], options);
+                                marker.bindPopup(curCoord.offense);
                                 curMarkers.push(marker);
                             }
                             clusterGroup.addLayers(curMarkers);

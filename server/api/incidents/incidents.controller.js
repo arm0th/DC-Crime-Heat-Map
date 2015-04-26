@@ -32,8 +32,13 @@ exports.show = function (req, res) {
 };
 
 exports.showYear = function (req, res) {
-    console.log("what gives:" + req.params.year);
-    Incident.find({year: req.params.year}, '-_id lat lon offense year', function (err, incidents) {
+    var year = req.params.year.replace(/\.json$/g, '');
+
+    if (isNaN(year)) {
+        return handleError(res, "Invalid year!");
+    }
+
+    Incident.find({year: year}, '-_id lat lon offense year', function (err, incidents) {
         if (err) {
             return handleError(res, err);
         }

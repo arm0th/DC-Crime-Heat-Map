@@ -10,7 +10,7 @@ function calcTotals(data) {
         curCrimeType,
         finalArray = [];
     _.each(data, function (val) {
-        curCrimeType = val[2];
+        curCrimeType = val.offense;
         if (!results[curCrimeType]) {
             results[curCrimeType] = 1;
         } else {

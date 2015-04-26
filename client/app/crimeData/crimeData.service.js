@@ -13,39 +13,39 @@
             dataURLs = [
                 {
                     id: "crimeData2006",
-                    src: "app/data/crimeDataCoords_2006.json"
+                    src: "/api/incidents/year/2006.json"
                 },
                 {
                     id: "crimeData2007",
-                    src: "app/data/crimeDataCoords_2007.json"
+                    src: "/api/incidents/year/2007.json"
                 },
                 {
                     id: "crimeData2008",
-                    src: "app/data/crimeDataCoords_2008.json"
+                    src: "/api/incidents/year/2008.json"
                 },
                 {
                     id: "crimeData2009",
-                    src: "app/data/crimeDataCoords_2009.json"
+                    src: "/api/incidents/year/2009.json"
                 },
                 {
                     id: "crimeData2010",
-                    src: "app/data/crimeDataCoords_2010.json"
+                    src: "/api/incidents/year/2010.json"
                 },
                 {
                     id: "crimeData2011",
-                    src: "app/data/crimeDataCoords_2011.json"
+                    src: "/api/incidents/year/2011.json"
                 },
                 {
                     id: "crimeData2012",
-                    src: "app/data/crimeDataCoords_2012.json"
+                    src: "/api/incidents/year/2012.json"
                 },
                 {
                     id: "crimeData2013",
-                    src: "app/data/crimeDataCoords_2013.json"
+                    src: "/api/incidents/year/2013.json"
                 },
                 {
                     id: "crimeData2014",
-                    src: "app/data/crimeDataCoords_2014.json"
+                    src: "/api/incidents/year/2014.json"
                 }
             ],
             queue = null;
