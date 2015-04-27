@@ -9,9 +9,7 @@
         'dcCrimeHeatmapApp.mainMap.icons'
     ]);
     app.controller('MainCtrl', function ($scope, $http, $timeout, socket, crimeData, Modal, IconFactory) {
-        var main = this,
-            App = window.App || {},
-            MainApp = {
+        var MainApp = {
                 worker: null,
                 totalsWorker: null,
                 initialize: function () {
@@ -44,7 +42,7 @@
                             $scope.$watch(function () {return crimeData.yearsData.curYear; },
                                 function (newVal, oldVal, s) {
                                     console.log("year updated:" + newVal);
-                                    App.updateYear(newVal);
+                                    MainApp.updateYear(newVal);
                                 });
 
                         },
@@ -77,41 +75,24 @@
 
                 },
                 calcTotals: function (data) {
-                    if (typeof (Worker) !== "undefined") {
-                        //if a worker is running, stop it
-                        if (this.totalsWorker !== null) {
-                            this.totalsWorker.terminate();
-                        }
-
-                        this.totalsWorker = new Worker("app/workers/calcTotalsWorker.js");
-
-                        this.totalsWorker.onmessage = function (e) {
-                            var totals = e.data,
-                                curTotal,
-                                template,
-                                htmlStr;
-
+                    crimeData.getCrimeTotals(crimeData.yearsData.curYear)
+                        .then(function (data) {
                             //update crime totals
-                            $scope.status.curCrimeTotals = e.data.map(function (item) {
+                            $scope.status.curCrimeTotals = data.map(function (item) {
                                 item.iconSrc = IconFactory.getIconPath(item.offense);
                                 item.key = generateKey(item.offense);
                                 return item;
                             });
 
-                            $scope.legendState = e.data.reduce(function (prev, cur) {
+                            $scope.legendState = data.reduce(function (prev, cur) {
                                 //add key value pairs to an object
                                 prev[cur.key] = true;
                                 return prev;
                             }, {});
 
-
-                        };
-
-                        //start the web worker
-                        this.totalsWorker.postMessage(data);
-                    } else {
-                        alert("Web workers aren't supported on your browser. No plotting for you!");
-                    }
+                        }, function (err) {
+                            console.log('Failed to retrieve totals:' + err);
+                        });
                 },
                 showMessage: function (msg) {
                     //show modal
@@ -135,13 +116,7 @@
 
         $scope.legendState = {};
 
-        //on document ready
-        $(function () {
-            //extend everything from main app
-            _.extend(App, MainApp);
-
-            App.initialize();
-        });
+        MainApp.initialize();
 
 
         //    $scope.awesomeThings = [];

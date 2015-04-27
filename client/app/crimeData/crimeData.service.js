@@ -1,8 +1,9 @@
 /*global angular, createjs */
+/*jslint nomen: true */
 (function () {
     "use strict";
 
-    function crimeYearsFactory($q) {
+    function crimeYearsFactory($q, $http) {
         var startYear = 2006,
             endYear = 2014,
             index = endYear,
@@ -108,12 +109,43 @@
             return defer.promise;
         }
 
+        function getCrimeTotals(year, filter) {
+            var defer = $q.defer(),
+                url = '/api/incidents/totals';
+
+            if (year && !isNaN(year)) {
+                url += '/' + year;
+            }
+
+            $http.get(url)
+                .success(function (data, status, headers, config) {
+                    var results = data.map(function (curObj) {
+                        return {
+                            offense: curObj._id,
+                            offenseFormatted: capitalizeStr(curObj._id),
+                            total: curObj.total,
+                            totalFormatted: insertCommas(curObj.total),
+                            isVisible: true
+                        };
+                    });
+
+
+                    defer.resolve(results);
+                })
+                .error(function (err, status, headers, config) {
+                    defer.reject(err);
+                });
+
+            return defer.promise;
+        }
+
         // Public API here
         return {
             yearsData: data,
             dataURLs: dataURLs,
             getData: getCrimeData,
-            updateCurYear: updateCurYear
+            updateCurYear: updateCurYear,
+            getCrimeTotals: getCrimeTotals
         };
     }
 
