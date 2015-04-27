@@ -8,10 +8,7 @@ var router = express.Router();
 
 router.get('/', controller.index);
 router.get('/year/:year', controller.showYear);
-//router.get('/:id', controller.show);
-//router.post('/', controller.create);
-//router.put('/:id', controller.update);
-//router.patch('/:id', controller.update);
-//router.delete('/:id', controller.destroy);
+router.get('/totals', controller.showTotals);
+router.get('/totals/:year', controller.showTotalsForYear);
 
 module.exports = router;

@@ -50,3 +50,43 @@ exports.showYear = function (req, res) {
         return res.json(incidents);
     });
 };
+
+exports.showTotals = function (req, res) {
+    Incident.aggregate({
+        $group: {
+            _id: "$offense",
+            total: {$sum: 1}
+        }
+    }, function (err, totals) {
+
+        if (err) {
+            return handleError(res, err);
+        }
+
+        return res.json(totals);
+    });
+};
+
+exports.showTotalsForYear = function (req, res) {
+    var year = req.params.year.replace(/\.json$/g, '');
+
+    if (isNaN(year)) {
+        return handleError(res, "Invalid year!");
+    }
+
+    Incident.aggregate([{
+        $match: {year: Number(year)}
+    }, {
+        $group: {
+            _id: "$offense",
+            total: {$sum: 1}
+        }
+    }], function (err, totals) {
+
+        if (err) {
+            return handleError(res, err);
+        }
+
+        return res.json(totals);
+    });
+};
