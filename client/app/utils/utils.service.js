@@ -3,7 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module('dcCrimeHeatMapApp')
+    angular.module('dcCrimeHeatmapApp.utils', [])
         .factory('utils', function () {
             // Service logic
             // ...

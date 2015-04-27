@@ -3,7 +3,7 @@
 (function () {
     "use strict";
 
-    function crimeYearsFactory($q, $http) {
+    function crimeYearsFactory($q, $http, utils) {
         var startYear = 2006,
             endYear = 2014,
             index = endYear,
@@ -122,9 +122,9 @@
                     var results = data.map(function (curObj) {
                         return {
                             offense: curObj._id,
-                            offenseFormatted: capitalizeStr(curObj._id),
+                            offenseFormatted: utils.capitalizeStr(curObj._id),
                             total: curObj.total,
-                            totalFormatted: insertCommas(curObj.total),
+                            totalFormatted: utils.insertCommas(curObj.total),
                             isVisible: true
                         };
                     });
@@ -149,6 +149,6 @@
         };
     }
 
-    angular.module('dcCrimeHeatmapApp.crimeDataFactory', [])
+    angular.module('dcCrimeHeatmapApp.crimeDataFactory', ['dcCrimeHeatmapApp.utils'])
         .factory('crimeData', crimeYearsFactory);
 }());
