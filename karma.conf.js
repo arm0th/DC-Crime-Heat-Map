@@ -27,9 +27,9 @@ module.exports = function(config) {
       'client/app/vendor/leaflet-heat.js',
       'client/components/**/*.js',
       'client/components/**/*.html',
-      'client/app/app.js',
       'client/app/**/*.html',
-      'client/app/**/*.js'
+      'client/app/**/*.js',
+      'client/app/app.js'
     ],
 
     preprocessors: {

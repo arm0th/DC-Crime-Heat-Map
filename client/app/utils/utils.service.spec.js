@@ -3,7 +3,7 @@
 describe('Service: utils', function () {
 
   // load the service's module
-  beforeEach(module('dcCrimeHeatMapApp'));
+  beforeEach(module('dcCrimeHeatmapApp.utils'));
 
   // instantiate service
   var utils;
@@ -11,8 +11,8 @@ describe('Service: utils', function () {
     utils = _utils_;
   }));
 
-  it('should do something', function () {
-    expect(!!utils).toBe(true);
+  it('should define capitalizeStr', function () {
+    expect(utils.capitalizeStr).toBeDefined();
   });
 
 });
