@@ -41,7 +41,7 @@ module.exports = function(config) {
     },
 
     // list of files / patterns to exclude
-    exclude: ['**/workers/*'],
+    exclude: ['**/workers/*', 'client/app/bower_components/*'],
 
     // web server port
     port: 8080,
