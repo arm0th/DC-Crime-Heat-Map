@@ -12,7 +12,7 @@ describe('Service: utils', function () {
   }));
 
   it('should define capitalizeStr', function () {
-    expect(utils.capitalizeStr).toBeDefined();
+    expect(utils.capitalizeStr).to.be.defined;
   });
 
 });

@@ -32,12 +32,12 @@ describe('Controller: MainCtrl', function () {
 
   it('should define a status object', function () {
     //$httpBackend.flush();
-    expect(scope.status).toEqual(jasmine.any(Object));
-    expect(scope.legendState).toEqual(jasmine.any(Object));
+    expect(scope.status).to.be.defined;
+    expect(scope.legendState).to.be.defined;
   });
 
   it('should define a legendState object', function () {
-    expect(scope.legendState).toEqual(jasmine.any(Object));
+    expect(scope.legendState).to.be.defined;
   });
 
 });

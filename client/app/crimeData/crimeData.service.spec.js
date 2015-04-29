@@ -14,7 +14,7 @@ describe('Service: crimeData', function () {
   var crimeData;
 
   it('should do something', function () {
-    expect(!!crimeData).toBe(true);
+    expect(!!crimeData).to.equal(true);
   });
 
 });
