@@ -1,3 +1,5 @@
+/*global describe, beforeEach, inject, it, module */
+/*jslint nomen: true */
 describe('Service: utils', function () {
     'use strict';
 
