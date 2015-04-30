@@ -20,8 +20,7 @@
                 },
                 downloadData: function () {
                     var that = this,
-                        getCurData = function (m) {
-                            console.log('MainCtlr::curData - ' + m);
+                        getCurData = function () {
                             return crimeData.getData(crimeData.yearsData.curYear);
                         },
                         populateData = function (data) {

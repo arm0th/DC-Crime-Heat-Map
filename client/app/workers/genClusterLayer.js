@@ -44,7 +44,10 @@ function processChunk() {
         dataSlice = self.data.slice(self.curStartIdx, nextStartIdx);
         postMessage({
             status: "loading",
-            data: dataSlice
+            data: dataSlice,
+            data2: dataSlice.map(function (d) {
+                return [d.lat, d.lon, d.offense];
+            })
         });
         self.curStartIdx = nextStartIdx;
 
@@ -69,7 +72,7 @@ onmessage = function (e) {
         });
     }
     self.dataLen = self.data.length;
-
+    self.chunkOffset = self.dataLen / 4;
     //start the timeout "loop"
     self.timeoutObj = setTimeout(processChunk, self.timeoutVal);
 };

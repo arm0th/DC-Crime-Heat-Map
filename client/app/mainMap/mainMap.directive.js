@@ -29,12 +29,12 @@
                     }).setView(config.startCoords, config.startZoom);
 
                 //add heat layer with empty set for now
-                curHeatLayer = L.heatLayer([], {
-                    maxZoom: config.maxZoom,
-                    max: 0.7,
-                    radius: 30
-                });
-                curHeatLayer.addTo(map);
+//                curHeatLayer = L.heatLayer([], {
+//                    maxZoom: config.maxZoom,
+//                    max: 0.7,
+//                    radius: 30
+//                });
+//                curHeatLayer.addTo(map);
 
                 //create cluster layer where all the points are held
                 clusterLayer = L.markerClusterGroup({
@@ -102,8 +102,12 @@
                             curCoord,
                             marker,
                             curMarkers = [],
-                            options = {};
+                            options = {},
+                            startTime,
+                            endTime;
+
                         if (obj.status === "loading") {
+                            startTime = new Date().getTime();
                             for (idx = 0; idx < obj.data.length; idx += 1) {
                                 curCoord = obj.data[idx];
                                 options = {
@@ -115,6 +119,8 @@
                                 curMarkers.push(marker);
                             }
                             clusterGroup.addLayers(curMarkers);
+                            endTime = new Date().getTime();
+                            console.log("Time:" + ((endTime - startTime) / 1000.0));
                         } else if (obj.status === "complete") {
                             //show message
                             //parent.showMessage("Loaded Crime data points");
@@ -137,7 +143,7 @@
             function updateYear(year, cData) {
                 cData.getData(year).then(function (data) {
                     if (map) {
-                        loadHeatMapLayer(map, data);
+                        //loadHeatMapLayer(map, data);
                     }
 
                     if (clusterLayer) {
@@ -174,7 +180,7 @@
                     scope.$watch('status.curCrimeData', function (newVal, oldVal) {
                         if (newVal && newVal.length > 0) {
                             if (map) {
-                                loadHeatMapLayer(map, curHeatLayer, newVal);
+                                //loadHeatMapLayer(map, curHeatLayer, newVal);
                                 loadClusterData(newVal, clusterLayer, undefined).then(
                                     function (msg) {
                                         showMessage(msg);
@@ -195,7 +201,7 @@
 
                             loadClusterData(scope.status.curCrimeData, clusterLayer, newVal).then(
                                 function (msg) {
-                                    loadHeatMapLayer(map, curHeatLayer, scope.status.curCrimeData, newVal);
+                                    //loadHeatMapLayer(map, curHeatLayer, scope.status.curCrimeData, newVal);
                                     showMessage(msg);
                                 },
                                 function (err) {
