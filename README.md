@@ -60,7 +60,7 @@ The download script retrieves the data, uncompresses and then uses a python scri
 
 ## Unit Tests
 
-The [Mocha](http://visionmedia.github.io/mocha/) test framework is used for unit tests in addition to [Chai](http://chaijs.com/) for the assertions. To run the test suite, enter the following command:
+The [Mocha](http://mochajs.org/) test framework is used for unit tests in addition to [Chai](http://chaijs.com/) for the assertions. To run the test suite, enter the following command:
 
 ```bash
 $ npm test
